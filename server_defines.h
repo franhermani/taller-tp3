@@ -1,11 +1,12 @@
 #define ATTEMPTS    10
 
+#define NUM_DIGITS  3
 #define MIN_NUM     100
 #define MAX_NUM     999
 
-#define REGULAR     "regular"
-#define BIEN        "bien"
-#define MAL         "mal"
+#define GOOD        " bien"
+#define REGULAR     " regular"
+#define BAD         " mal"
 
 #define EXIT_CHAR   'q'
 
