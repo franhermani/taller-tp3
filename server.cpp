@@ -10,7 +10,7 @@
 
 int main(int argc, char *argv[]) {
     try {
-        int secret_number = 1200;
+        int secret_number = 132;
         NumberGuesser numberGuesser(secret_number);
 
         int n = 132;

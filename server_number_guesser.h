@@ -10,11 +10,14 @@ class NumberGuesser {
     int min_num;
     int max_num;
 
-    // Determina si 'number' se encuentra en un rango valido
-    bool isInRange(const int number);
+    // Determina si 'number' se encuentra fuera del rango valido
+    bool isOutOfRange(const int& number);
 
     // Convierte un entero a un vector con sus digitos
-    std::vector<int> convertIntToVector(int number);
+    const std::vector<int> convertIntToVector(int number);
+
+    // Determina si 'number' tiene cifras repetidas
+    bool hasRepeatedDigits(const std::vector<int>& digits);
 
 public:
     // Constructor

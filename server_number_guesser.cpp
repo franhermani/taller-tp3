@@ -1,23 +1,33 @@
 #include <string>
 #include <vector>
 #include <map>
+#include <set>
 #include <algorithm>
 #include <utility>
 #include "server_number_guesser.h"
 #include "server_defines.h"
 #include "server_out_of_range_error.h"
+#include "server_repeated_digits_error.h"
 
 NumberGuesser::NumberGuesser(int number) : min_num(MIN_NUM), max_num(MAX_NUM) {
-    if (! isInRange(number)) throw OutOfRangeError();
+    if (isOutOfRange(number)) throw OutOfRangeError();
 
     secret_number = convertIntToVector(number);
+
+    if (hasRepeatedDigits(secret_number)) throw RepeatedDigitsError();
 }
 
-bool NumberGuesser::isInRange(const int number) {
-    return (number >= min_num && number <= max_num);
+bool NumberGuesser::isOutOfRange(const int& number) {
+    return (number < min_num || number > max_num);
 }
 
-std::vector<int> NumberGuesser::convertIntToVector(int number) {
+bool NumberGuesser::hasRepeatedDigits(const std::vector<int>& digits) {
+    std::set<int> unique_digits(digits.begin(), digits.end());
+
+    return (unique_digits.size() != digits.size());
+}
+
+const std::vector<int> NumberGuesser::convertIntToVector(int number) {
     std::vector<int> digits;
 
     while (number) {
