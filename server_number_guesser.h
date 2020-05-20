@@ -7,6 +7,11 @@
 
 class NumberGuesser {
     std::vector<int> secret_number;
+    int min_num;
+    int max_num;
+
+    // Determina si 'number' se encuentra en un rango valido
+    bool isInRange(const int number);
 
     // Convierte un entero a un vector con sus digitos
     std::vector<int> convertIntToVector(int number);
@@ -14,7 +19,7 @@ class NumberGuesser {
 public:
     // Constructor
     // Recibe un numero secreto
-    explicit NumberGuesser(const int number);
+    explicit NumberGuesser(int number);
 
     // Cuenta la cantidad de digitos bien, regular y mal de 'number'
     // con respecto a 'secret_number'

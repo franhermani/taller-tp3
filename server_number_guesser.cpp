@@ -5,9 +5,17 @@
 #include <utility>
 #include "server_number_guesser.h"
 #include "server_defines.h"
+#include "server_out_of_range_error.h"
 
-NumberGuesser::NumberGuesser(const int number) :
-secret_number(convertIntToVector(number)) {}
+NumberGuesser::NumberGuesser(int number) : min_num(MIN_NUM), max_num(MAX_NUM) {
+    if (! isInRange(number)) throw OutOfRangeError();
+
+    secret_number = convertIntToVector(number);
+}
+
+bool NumberGuesser::isInRange(const int number) {
+    return (number >= min_num && number <= max_num);
+}
 
 std::vector<int> NumberGuesser::convertIntToVector(int number) {
     std::vector<int> digits;

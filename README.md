@@ -11,6 +11,10 @@ Link GitHub: https://github.com/franhermani/taller-tp3
 
 2. Definición de las constantes en los defines.h
 
+3. Resolución de la lógica del juego en un único ejecutable
+
+4. Agregado de excepciones en la lógica del juego
+
 # Puntos de interés
 
 # Aclaraciones
