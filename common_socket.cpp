@@ -3,6 +3,7 @@
 #include <iostream>
 #include <string.h>
 #include <unistd.h>
+#include <utility>
 #include "common_socket.h"
 
 #define OK 0
@@ -17,6 +18,19 @@ Socket::Socket(const char* host, const char* port) :
     hints.ai_flags = is_server ? AI_PASSIVE : 0;
 
     _resolve_addr(host, port);
+}
+
+Socket::Socket(const int sd) {
+    this->sd = sd;
+}
+
+Socket::Socket(Socket &&other) {
+    sd = std::move(other.sd);
+}
+
+Socket& Socket::operator=(Socket &&other) {
+    sd = std::move(other.sd);
+    return *this;
 }
 
 Socket::~Socket() {
@@ -100,6 +114,15 @@ const int Socket::listenToClients() {
         return ERROR;
     }
     return OK;
+}
+
+Socket Socket::acceptClients() {
+    int new_sd = accept(sd, NULL, NULL);
+    if (new_sd == -1) {
+        // TODO: throw exception
+    }
+    Socket accepted_socket(new_sd);
+    return std::move(accepted_socket);
 }
 
 const int Socket::sendBytes(const char *buffer, const int length) {

@@ -10,31 +10,71 @@ class Socket {
     struct addrinfo hints;
     bool is_server;
 
+    // Obtiene addresses segun el 'host' y 'port' y selecciona
+    // la primera disponible
+    // Devuelve OK o codigo de error
     const int _resolve_addr(const char *host, const char *port);
 
+    // [Solo servidor]
+    // Asocia un socket a un proceso dado
+    // Devuelve OK o codigo de error
     const int _bind(struct sockaddr *addr, const socklen_t len);
 
+    // [Solo cliente]
+    // Intenta conectarse a un socket servidor
+    // Devuelve OK o codigo de error
     const int _connect(struct sockaddr *addr, const socklen_t len);
 
 public:
     // Constructor
+    // Crea un socket asociado al 'host' y 'port' y bindea (si es server)
+    // o conecta (si es cliente) a la primera address disponible
     Socket(const char *host, const char *port);
 
+    // [Solo servidor]
+    // Constructor para sockets devueltos por accept
+    explicit Socket(const int sd);
+
+    // Constructor y asignacion por copia deshabilitados
+    Socket(const Socket&) = delete;
+    Socket& operator=(const Socket&) = delete;
+
+    // Constructor y asignacion por movimiento
+    Socket(Socket&& other);
+    Socket& operator=(Socket&& other);
+
     // Destructor
+    // Cierra el socket descriptor (en caso de que no se haya cerrado antes)
     ~Socket();
 
+    // Cierra el canal 'channel', el cual puede ser:
+    // - SHUT_RD    --> Lectura
+    // - SHUT_WR    --> Escritura
+    // - SHUT_RDWR  --> Lectura y Escritura
+    // Devuelve OK o codigo de error
     const int shutdownChannel(const int channel);
 
+    // Cierra el socket descriptor y le asigna un valor de -1
+    // Devuelve OK o codigo de error
     const int closeSocketDescriptor();
 
+    // [Solo servidor]
+    // Escucha conexiones entrantes de clientes (hasta MAX_LISTEN_QUEUE_LEN)
+    // Devuelve OK o codigo de error
     const int listenToClients();
 
-    const int acceptClients(Socket& accepted_socket);
+    // [Solo servidor]
+    // Acepta conexiones entrantes de clientes (metodo bloqueante)
+    // Devuelve un nuevo Socket asociado al cliente
+    Socket acceptClients();
 
+    // Intenta enviar 'length' bytes almacenados en 'buffer' a otro socket
+    // Devuelve la cantidad de bytes enviados o codigo de error
     const int sendBytes(const char *buffer, const int length);
 
+    // Intenta recibir 'length' bytes de otro socket y almacenarlos en 'buffer'
+    // Devuelve la cantidad de bytes recibidos o codigo de error
     const int receiveBytes(char *buffer, const int length);
 };
-
 
 #endif // SOCKET_H
