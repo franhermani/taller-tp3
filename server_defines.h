@@ -9,3 +9,5 @@
 
 #define WIN_MSG     "Ganaste"
 #define LOSE_MSG    "Perdiste"
+
+#define EXIT_CHAR   'q'
