@@ -22,7 +22,7 @@ Link GitHub: https://github.com/franhermani/taller-tp3
 
 6. Validación de comandos del lado del cliente
 
-7. Uso de excepciones en la clase Socket
+7. Creación de la clase SocketError y uso de ella en la clase Socket
 
 
 # Puntos de interés

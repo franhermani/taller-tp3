@@ -8,6 +8,7 @@
 #include "common_socket_error.h"
 
 #define OK 0
+#define ERROR 1
 #define MAX_LISTEN_QUEUE_LEN 15
 
 Socket::Socket(const char* host, const char* port) :
@@ -74,11 +75,11 @@ const int Socket::_bind(struct sockaddr *addr, const socklen_t len) {
 
     if (setsockopt(sd, SOL_SOCKET, SO_REUSEADDR, &val, sizeof(val)) == -1) {
         closeSocketDescriptor();
-        throw SocketError("Error en setsockopt\n");
+        return ERROR;
     }
     if (bind(sd, addr, len) == -1) {
         closeSocketDescriptor();
-        throw SocketError("Error al enlazar el socket\n");
+        return ERROR;
     }
     return OK;
 }
@@ -86,7 +87,7 @@ const int Socket::_bind(struct sockaddr *addr, const socklen_t len) {
 const int Socket::_connect(struct sockaddr *addr, const socklen_t len) {
     if (connect(sd, addr, len) == -1) {
         closeSocketDescriptor();
-        throw SocketError("Error al conectar con el servidor\n");
+        return ERROR;
     }
     return OK;
 }
