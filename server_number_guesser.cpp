@@ -17,17 +17,18 @@ NumberGuesser::NumberGuesser(int number) : min_num(MIN_NUM), max_num(MAX_NUM) {
     if (hasRepeatedDigits(secret_number)) throw RepeatedDigitsError();
 }
 
-bool NumberGuesser::isOutOfRange(const int& number) {
+const bool NumberGuesser::isOutOfRange(const int& number) const {
     return (number < min_num || number > max_num);
 }
 
-bool NumberGuesser::hasRepeatedDigits(const std::vector<int>& digits) {
+const bool NumberGuesser::hasRepeatedDigits(const std::vector<int>& digits)
+const {
     std::set<int> unique_digits(digits.begin(), digits.end());
 
     return (unique_digits.size() != digits.size());
 }
 
-const std::vector<int> NumberGuesser::convertIntToVector(int number) {
+const std::vector<int> NumberGuesser::convertIntToVector(int number) const {
     std::vector<int> digits;
 
     while (number) {
@@ -39,7 +40,8 @@ const std::vector<int> NumberGuesser::convertIntToVector(int number) {
     return std::move(digits);
 }
 
-const std::map<std::string, int> NumberGuesser::countDigits(const int number) {
+const std::map<std::string, int> NumberGuesser::countDigits(const int number)
+const {
     std::map<std::string, int> answer = {{GOOD, 0}, {REGULAR, 0}, {BAD, 0}};
     std::vector<int> digits = convertIntToVector(number);
 
