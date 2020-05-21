@@ -12,17 +12,17 @@ class Socket {
 
     // Obtiene addresses segun el 'host' y 'port' y selecciona
     // la primera disponible
-    // Devuelve OK o codigo de error
-    const int _resolve_addr(const char *host, const char *port);
+    // Lanza SocketError en caso de error
+    void _resolve_addr(const char *host, const char *port);
 
     // [Solo servidor]
     // Asocia un socket a un proceso dado
-    // Devuelve OK o codigo de error
+    // Devuelve OK o lanza SocketError en caso de error
     const int _bind(struct sockaddr *addr, const socklen_t len);
 
     // [Solo cliente]
     // Intenta conectarse a un socket servidor
-    // Devuelve OK o codigo de error
+    // Devuelve OK o lanza SocketError en caso de error
     const int _connect(struct sockaddr *addr, const socklen_t len);
 
 public:
@@ -51,29 +51,32 @@ public:
     // - SHUT_RD    --> Lectura
     // - SHUT_WR    --> Escritura
     // - SHUT_RDWR  --> Lectura y Escritura
-    // Devuelve OK o codigo de error
-    const int shutdownChannel(const int channel);
+    // Lanza SocketError en caso de error
+    void shutdownChannel(const int channel);
 
     // Cierra el socket descriptor y le asigna un valor de -1
-    // Devuelve OK o codigo de error
-    const int closeSocketDescriptor();
+    // Lanza SocketError en caso de error
+    void closeSocketDescriptor();
 
     // [Solo servidor]
     // Escucha conexiones entrantes de clientes (hasta MAX_LISTEN_QUEUE_LEN)
-    // Devuelve OK o codigo de error
-    const int listenToClients();
+    // Lanza SocketError en caso de error
+    void listenToClients();
 
     // [Solo servidor]
     // Acepta conexiones entrantes de clientes (metodo bloqueante)
     // Devuelve un nuevo Socket asociado al cliente
+    // Lanza SocketError en caso de error
     Socket acceptClients();
 
     // Intenta enviar 'length' bytes almacenados en 'buffer' a otro socket
-    // Devuelve la cantidad de bytes enviados o codigo de error
+    // Devuelve la cantidad de bytes enviados
+    // Lanza SocketError en caso de error
     const int sendBytes(const char *buffer, const int length);
 
     // Intenta recibir 'length' bytes de otro socket y almacenarlos en 'buffer'
-    // Devuelve la cantidad de bytes recibidos o codigo de error
+    // Devuelve la cantidad de bytes recibidos
+    // Lanza SocketError en caso de error
     const int receiveBytes(char *buffer, const int length);
 };
 

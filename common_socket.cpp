@@ -5,9 +5,9 @@
 #include <unistd.h>
 #include <utility>
 #include "common_socket.h"
+#include "common_socket_error.h"
 
 #define OK 0
-#define ERROR 1
 #define MAX_LISTEN_QUEUE_LEN 15
 
 Socket::Socket(const char* host, const char* port) :
@@ -37,36 +37,30 @@ Socket::~Socket() {
     if (sd != -1) close(sd);
 }
 
-const int Socket::shutdownChannel(const int channel) {
-    if (shutdown(sd, channel) == -1) {
-        std::cerr << "Error: " << strerror(errno) << "\n";
-        return ERROR;
-    }
-    return OK;
+void Socket::shutdownChannel(const int channel) {
+    if (shutdown(sd, channel) == -1)
+        throw SocketError("Error al cerrar el canal %d del socket\n", channel);
 }
 
-const int Socket::closeSocketDescriptor() {
-    if (close(sd) == -1) {
-        std::cerr << "Error: " << strerror(errno) << "\n";
-        return ERROR;
-    }
+void Socket::closeSocketDescriptor() {
+    if (close(sd) == -1)
+        throw SocketError("Error al cerrar el socket\n");
+
     sd = -1;
-    return OK;
 }
 
-const int Socket::_resolve_addr(const char *host, const char *port) {
+void Socket::_resolve_addr(const char *host, const char *port) {
     struct addrinfo *ai_list, *ptr;
     int sd, status;
 
-    if ((status == getaddrinfo(host, port, &hints, &ai_list)) != 0) {
-        std::cerr << "Error en getaddrinfo: " << gai_strerror(status) << "\n";
-        return ERROR;
-    }
+    if ((status == getaddrinfo(host, port, &hints, &ai_list)) != 0)
+        throw SocketError("Error en getaddrinfo: %s\n", gai_strerror(status));
+
     for (ptr = ai_list; ptr != NULL; ptr = ptr->ai_next) {
         sd = socket(ptr->ai_family, ptr->ai_socktype, ptr->ai_protocol);
         if (sd == -1) continue;
-
         this->sd = sd;
+
         if (is_server) {
             if (_bind(ptr->ai_addr, ptr->ai_addrlen) == OK) break;
         } else {
@@ -74,12 +68,7 @@ const int Socket::_resolve_addr(const char *host, const char *port) {
         }
     }
     freeaddrinfo(ai_list);
-
-    if (this->sd == -1) {
-        std::cerr << "No hay conexiones disponibles\n";
-        return ERROR;
-    }
-    return OK;
+    if (this->sd == -1) throw SocketError("No hay conexiones disponibles\n");
 }
 
 const int Socket::_bind(struct sockaddr *addr, const socklen_t len) {
@@ -87,13 +76,11 @@ const int Socket::_bind(struct sockaddr *addr, const socklen_t len) {
 
     if (setsockopt(sd, SOL_SOCKET, SO_REUSEADDR, &val, sizeof(val)) == -1) {
         closeSocketDescriptor();
-        std::cerr << "Error: " << strerror(errno) << "\n";
-        return ERROR;
+        throw SocketError("Error en setsockopt\n");
     }
     if (bind(sd, addr, len) == -1) {
         closeSocketDescriptor();
-        std::cerr << "Error: " << strerror(errno) << "\n";
-        return ERROR;
+        throw SocketError("Error al enlazar el socket\n");
     }
     return OK;
 }
@@ -101,26 +88,23 @@ const int Socket::_bind(struct sockaddr *addr, const socklen_t len) {
 const int Socket::_connect(struct sockaddr *addr, const socklen_t len) {
     if (connect(sd, addr, len) == -1) {
         closeSocketDescriptor();
-        std::cerr << "Error: " << strerror(errno) << "\n";
-        return ERROR;
+        throw SocketError("Error al conectar con el servidor\n");
     }
     return OK;
 }
 
-const int Socket::listenToClients() {
+void Socket::listenToClients() {
     if (listen(sd, MAX_LISTEN_QUEUE_LEN) == -1) {
         closeSocketDescriptor();
-        std::cerr << "Error: " << strerror(errno) << "\n";
-        return ERROR;
+        throw SocketError("Error al escuchar clientes\n");
     }
-    return OK;
 }
 
 Socket Socket::acceptClients() {
     int new_sd = accept(sd, NULL, NULL);
-    if (new_sd == -1) {
-        // TODO: throw exception
-    }
+    if (new_sd == -1)
+        throw SocketError("Error al aceptar el cliente\n");
+
     Socket accepted_socket(new_sd);
     return std::move(accepted_socket);
 }
@@ -133,10 +117,8 @@ const int Socket::sendBytes(const char *buffer, const int length) {
         bytes_sent = send(sd, &buffer[tot_bytes_sent], length - tot_bytes_sent,
                           MSG_NOSIGNAL);
         if (bytes_sent == -1) {
-            std::cerr << "Error: " << strerror(errno) << "\n";
             socket_error = true;
         } else if (bytes_sent == 0) {
-            std::cerr << "Error: el socket se cerro inesperadamente\n";
             socket_closed = true;
         } else {
             tot_bytes_sent += bytes_sent;
@@ -145,7 +127,7 @@ const int Socket::sendBytes(const char *buffer, const int length) {
     if (socket_closed || socket_error) {
         shutdownChannel(SHUT_RDWR);
         closeSocketDescriptor();
-        return ERROR;
+        throw SocketError("Error al enviar el mensaje\n");
     }
     return tot_bytes_sent;
 }
@@ -158,7 +140,6 @@ const int Socket::receiveBytes(char *buffer, const int length) {
         bytes_recv = recv(sd, &buffer[tot_bytes_recv],
                           length - tot_bytes_recv, 0);
         if (bytes_recv == -1) {
-            std::cerr << "Error: " << strerror(errno) << "\n";
             socket_error = true;
         } else if (bytes_recv == 0) {
             socket_closed = true;
@@ -169,7 +150,7 @@ const int Socket::receiveBytes(char *buffer, const int length) {
     if (socket_error) {
         shutdownChannel(SHUT_RDWR);
         closeSocketDescriptor();
-        return ERROR;
+        throw SocketError("Error al recibir el mensaje\n");
     }
     return tot_bytes_recv;
 }
