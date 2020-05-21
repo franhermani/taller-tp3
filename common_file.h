@@ -13,6 +13,10 @@ public:
     // Abre el archivo
     explicit File(const char *path);
 
+    // Constructor y asignacion por copia deshabilitados
+    File(const File&) = delete;
+    File& operator=(const File&) = delete;
+    
     // Destructor
     // Cierra el archivo si no se pudo cerrar antes
     ~File();
