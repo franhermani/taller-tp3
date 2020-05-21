@@ -2,7 +2,7 @@
 #include <string>
 #include <exception>
 #include "client_orchestrator.h"
-#include "client_defines.h"
+#include "common_defines.h"
 
 ClientOrchestrator::ClientOrchestrator() {}
 

@@ -28,3 +28,6 @@ Link GitHub: https://github.com/franhermani/taller-tp3
 # Puntos de interés
 
 # Aclaraciones
+
+- El servidor lee el archivo de números completo y lo valida antes de
+  comenzar a escuchar por conexiones entrantes de clientes
