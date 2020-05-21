@@ -1,13 +1,8 @@
 #include <iostream>
-#include <exception>
-#include "client_defines.h"
+#include "client_orchestrator.h"
 
 #define RET 0
 #define NUM_PARAMS 3
-
-const bool isValidCommand(std::string command);
-
-const bool isValidNumber(std::string command);
 
 int main(int argc, char *argv[]) {
     if (argc != NUM_PARAMS) {
@@ -16,29 +11,17 @@ int main(int argc, char *argv[]) {
     }
 //    const char *host = argv[1], *port = argv[2];
 
+    ClientOrchestrator orchestrator;
+
     std::string command;
     while (getline(std::cin, command)) {
-        if (! isValidCommand(command)) {
-            std::cout << "Error: comando inválido. Escriba " << HELP
-                      << " para obtener ayuda\n";
+        if (! orchestrator.isValidCommand(command)) {
+            std::cout << "Error: comando inválido. Escriba AYUDA "
+                         "para obtener ayuda\n";
         } else {
-            // TODO: ...
+            // TODO: enviar comando al server
             std::cout << "Comando recibido OK\n";
         }
     }
     return RET;
-}
-
-const bool isValidCommand(std::string command) {
-    return (command == HELP || command == SURRENDER || isValidNumber(command));
-}
-
-const bool isValidNumber(std::string command) {
-    try {
-        int number = std::stoi(command);
-        if (number < MIN_NUM || number > MAX_NUM) return false;
-    } catch(std::invalid_argument) {
-        return false;
-    }
-    return true;
 }
