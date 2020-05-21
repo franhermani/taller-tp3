@@ -1,6 +1,3 @@
-#define ERROR_INVALID_PARAMS        "argumentos invalidos."
-#define ERROR_INVALID_COMMAND       "comando inválido. Escriba AYUDA para obtener ayuda"
-
 #define HELP            "AYUDA"
 #define SURRENDER       "RENDIRSE"
 #define NUMBER          "XXX"
