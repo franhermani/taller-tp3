@@ -20,6 +20,10 @@ Link GitHub: https://github.com/franhermani/taller-tp3
 
 5. Creación de la clase File para aplicar RAII con archivos
 
+6. Validación de comandos del lado del cliente
+
+7. Uso de excepciones en la clase Socket
+
 
 # Puntos de interés
 
