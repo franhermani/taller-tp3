@@ -20,6 +20,9 @@ public:
     // Lee el archivo de numeros, crea un NumberGuesser para cada uno
     // y lo almacena en el vector 'numbers'
     void parseNumbersFile();
+
+    // Imprime por pantalla las estadisticas de las partidas jugadas
+    void printGamesPlayedStats();
 };
 
 #endif // SERVER_ORCHESTRATOR_H

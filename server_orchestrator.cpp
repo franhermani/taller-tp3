@@ -1,3 +1,4 @@
+#include <iostream>
 #include <string>
 #include <utility>
 #include "server_orchestrator.h"
@@ -12,4 +13,8 @@ void ServerOrchestrator::parseNumbersFile() {
         numbers.push_back(std::move(numberGuesser));
     }
     numbers_file.closeFD();
+}
+
+void ServerOrchestrator::printGamesPlayedStats() {
+    std::cout << "Estadísticas:\n\tGanadores:  <cant>\n\tPerdedores: <cant>\n";
 }

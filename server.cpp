@@ -18,14 +18,13 @@ int main(int argc, char *argv[]) {
         File file(path);
         ServerOrchestrator orchestrator(file);
         orchestrator.parseNumbersFile();
+        orchestrator.printGamesPlayedStats();
     } catch(const std::exception &e) {
         std::cerr << e.what();
     } catch(...) {
         std::cerr << "Error desconocido\n";
     }
-
     // TODO: eliminar esto
-    std::cout << "Todo OK!\n";
     std::cout << host << "\n";
     std::cout << port << "\n";
 

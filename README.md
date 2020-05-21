@@ -18,7 +18,8 @@ Link GitHub: https://github.com/franhermani/taller-tp3
 
 4. Agregado de excepciones en la lógica del juego
 
-5. Estructura base del cliente-servidor
+5. Creación de la clase File para aplicar RAII con archivos
+
 
 # Puntos de interés
 
