@@ -8,6 +8,8 @@
 class ServerOrchestrator {
     File& numbers_file;
     std::vector<NumberGuesser> numbers;
+    int num_winners;
+    int num_losers;
 
 public:
     // Constructor

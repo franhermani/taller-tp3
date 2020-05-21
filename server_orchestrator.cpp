@@ -4,7 +4,8 @@
 #include "server_orchestrator.h"
 #include "common_file.h"
 
-ServerOrchestrator::ServerOrchestrator(File& file) : numbers_file(file) {}
+ServerOrchestrator::ServerOrchestrator(File& file) :
+numbers_file(file), num_winners(0), num_losers(0) {}
 
 void ServerOrchestrator::parseNumbersFile() {
     std::string line;
@@ -16,5 +17,6 @@ void ServerOrchestrator::parseNumbersFile() {
 }
 
 void ServerOrchestrator::printGamesPlayedStats() {
-    std::cout << "Estadísticas:\n\tGanadores:  <cant>\n\tPerdedores: <cant>\n";
+    std::cout << "Estadísticas:\n\tGanadores:  " << num_winners <<
+                 "\n\tPerdedores: " << num_losers << "\n";
 }
