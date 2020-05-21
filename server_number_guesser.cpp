@@ -8,6 +8,7 @@
 #include "server_defines.h"
 #include "server_out_of_range_error.h"
 #include "server_repeated_digits_error.h"
+#include "server_invalid_number_error.h"
 
 NumberGuesser::NumberGuesser(int number) : min_num(MIN_NUM), max_num(MAX_NUM) {
     if (isOutOfRange(number)) throw OutOfRangeError();
@@ -42,9 +43,12 @@ const std::vector<int> NumberGuesser::convertIntToVector(int number) const {
 
 const std::map<std::string, int> NumberGuesser::countDigits(const int number)
 const {
-    std::map<std::string, int> answer = {{GOOD, 0}, {REGULAR, 0}, {BAD, 0}};
-    std::vector<int> digits = convertIntToVector(number);
+    if (isOutOfRange(number)) throw InvalidNumberError();
 
+    std::vector<int> digits = convertIntToVector(number);
+    if (hasRepeatedDigits(digits)) throw InvalidNumberError();
+
+    std::map<std::string, int> answer = {{GOOD, 0}, {REGULAR, 0}, {BAD, 0}};
     size_t i;
     for (i = 0; i < secret_number.size(); i ++) {
         if (digits[i] == secret_number[i]) {
