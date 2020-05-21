@@ -1,20 +1,15 @@
-#include <iostream>
-#include <fstream>
 #include <string>
 #include <utility>
 #include "server_orchestrator.h"
+#include "common_file.h"
 
-ServerOrchestrator::ServerOrchestrator() {}
+ServerOrchestrator::ServerOrchestrator(File& file) : numbers_file(file) {}
 
-void ServerOrchestrator::parseNumbersFile(const char *path) {
-    std::ifstream numbers_file;
-    numbers_file.open(path, std::ifstream::in);
-    if (! numbers_file.good())
-        throw std::runtime_error("Error al abrir el archivo de números\n");
-
+void ServerOrchestrator::parseNumbersFile() {
     std::string line;
-    while (getline(numbers_file, line)) {
+    while (numbers_file.readLine(line)) {
         NumberGuesser numberGuesser(std::stoi(line));
         numbers.push_back(std::move(numberGuesser));
     }
+    numbers_file.closeFD();
 }

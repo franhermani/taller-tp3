@@ -3,13 +3,15 @@
 
 #include <vector>
 #include "server_number_guesser.h"
+#include "common_file.h"
 
 class ServerOrchestrator {
+    File& numbers_file;
     std::vector<NumberGuesser> numbers;
 
 public:
     // Constructor
-    ServerOrchestrator();
+    explicit ServerOrchestrator(File& file);
 
     // Constructor y asignacion por copia deshabilitados
     ServerOrchestrator(const ServerOrchestrator& other) = delete;
@@ -17,7 +19,7 @@ public:
 
     // Lee el archivo de numeros, crea un NumberGuesser para cada uno
     // y lo almacena en el vector 'numbers'
-    void parseNumbersFile(const char *path);
+    void parseNumbersFile();
 };
 
 #endif // SERVER_ORCHESTRATOR_H

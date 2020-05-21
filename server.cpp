@@ -1,6 +1,7 @@
 #include <iostream>
 #include <exception>
 #include "server_orchestrator.h"
+#include "common_file.h"
 
 #define OK 0
 #define ERROR 1
@@ -11,11 +12,12 @@ int main(int argc, char *argv[]) {
         std::cerr << "Error: argumentos inválidos>\n";
         return ERROR;
     }
-    ServerOrchestrator orchestrator;
     const char *host = 0, *port = argv[1], *path = argv[2];
 
     try {
-        orchestrator.parseNumbersFile(path);
+        File file(path);
+        ServerOrchestrator orchestrator(file);
+        orchestrator.parseNumbersFile();
     } catch(const std::exception &e) {
         std::cerr << e.what();
     } catch(...) {
@@ -23,6 +25,7 @@ int main(int argc, char *argv[]) {
     }
 
     // TODO: eliminar esto
+    std::cout << "Todo OK!\n";
     std::cout << host << "\n";
     std::cout << port << "\n";
 
