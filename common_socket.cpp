@@ -39,7 +39,7 @@ Socket::~Socket() {
 
 const int Socket::shutdownChannel(const int channel) {
     if (shutdown(sd, channel) == -1) {
-        std::cout << "Error: " << strerror(errno) << "\n";
+        std::cerr << "Error: " << strerror(errno) << "\n";
         return ERROR;
     }
     return OK;
@@ -47,7 +47,7 @@ const int Socket::shutdownChannel(const int channel) {
 
 const int Socket::closeSocketDescriptor() {
     if (close(sd) == -1) {
-        std::cout << "Error: " << strerror(errno) << "\n";
+        std::cerr << "Error: " << strerror(errno) << "\n";
         return ERROR;
     }
     sd = -1;
@@ -59,7 +59,7 @@ const int Socket::_resolve_addr(const char *host, const char *port) {
     int sd, status;
 
     if ((status == getaddrinfo(host, port, &hints, &ai_list)) != 0) {
-        std::cout << "Error en getaddrinfo: " << gai_strerror(status) << "\n";
+        std::cerr << "Error en getaddrinfo: " << gai_strerror(status) << "\n";
         return ERROR;
     }
     for (ptr = ai_list; ptr != NULL; ptr = ptr->ai_next) {
@@ -76,7 +76,7 @@ const int Socket::_resolve_addr(const char *host, const char *port) {
     freeaddrinfo(ai_list);
 
     if (this->sd == -1) {
-        std::cout << "No hay conexiones disponibles\n";
+        std::cerr << "No hay conexiones disponibles\n";
         return ERROR;
     }
     return OK;
@@ -87,12 +87,12 @@ const int Socket::_bind(struct sockaddr *addr, const socklen_t len) {
 
     if (setsockopt(sd, SOL_SOCKET, SO_REUSEADDR, &val, sizeof(val)) == -1) {
         closeSocketDescriptor();
-        std::cout << "Error: " << strerror(errno) << "\n";
+        std::cerr << "Error: " << strerror(errno) << "\n";
         return ERROR;
     }
     if (bind(sd, addr, len) == -1) {
         closeSocketDescriptor();
-        std::cout << "Error: " << strerror(errno) << "\n";
+        std::cerr << "Error: " << strerror(errno) << "\n";
         return ERROR;
     }
     return OK;
@@ -101,7 +101,7 @@ const int Socket::_bind(struct sockaddr *addr, const socklen_t len) {
 const int Socket::_connect(struct sockaddr *addr, const socklen_t len) {
     if (connect(sd, addr, len) == -1) {
         closeSocketDescriptor();
-        std::cout << "Error: " << strerror(errno) << "\n";
+        std::cerr << "Error: " << strerror(errno) << "\n";
         return ERROR;
     }
     return OK;
@@ -110,7 +110,7 @@ const int Socket::_connect(struct sockaddr *addr, const socklen_t len) {
 const int Socket::listenToClients() {
     if (listen(sd, MAX_LISTEN_QUEUE_LEN) == -1) {
         closeSocketDescriptor();
-        std::cout << "Error: " << strerror(errno) << "\n";
+        std::cerr << "Error: " << strerror(errno) << "\n";
         return ERROR;
     }
     return OK;
@@ -133,10 +133,10 @@ const int Socket::sendBytes(const char *buffer, const int length) {
         bytes_sent = send(sd, &buffer[tot_bytes_sent], length - tot_bytes_sent,
                           MSG_NOSIGNAL);
         if (bytes_sent == -1) {
-            std::cout << "Error: " << strerror(errno) << "\n";
+            std::cerr << "Error: " << strerror(errno) << "\n";
             socket_error = true;
         } else if (bytes_sent == 0) {
-            std::cout << "Error: el socket se cerro inesperadamente\n";
+            std::cerr << "Error: el socket se cerro inesperadamente\n";
             socket_closed = true;
         } else {
             tot_bytes_sent += bytes_sent;
@@ -158,7 +158,7 @@ const int Socket::receiveBytes(char *buffer, const int length) {
         bytes_recv = recv(sd, &buffer[tot_bytes_recv],
                           length - tot_bytes_recv, 0);
         if (bytes_recv == -1) {
-            std::cout << "Error: " << strerror(errno) << "\n";
+            std::cerr << "Error: " << strerror(errno) << "\n";
             socket_error = true;
         } else if (bytes_recv == 0) {
             socket_closed = true;
