@@ -43,9 +43,7 @@ void Socket::shutdownChannel(const int channel) {
 }
 
 void Socket::closeSocketDescriptor() {
-    if (close(sd) == -1)
-        throw SocketError("Error al cerrar el socket\n");
-
+    if (close(sd) == -1) throw SocketError("Error al cerrar el socket\n");
     sd = -1;
 }
 
