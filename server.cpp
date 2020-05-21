@@ -1,27 +1,15 @@
 #include <iostream>
-#include <string>
-#include <map>
-#include <exception>
-#include "server_number_guesser.h"
-#include "server_defines.h"
 
 #define OK 0
 #define ERROR 1
+#define NUM_PARAMS 3
 
 int main(int argc, char *argv[]) {
-    try {
-        int secret_number = 132;
-        NumberGuesser numberGuesser(secret_number);
-
-        int n = 132;
-        std::map<std::string, int> answer = numberGuesser.countDigits(n);
-
-        std::cout << answer[GOOD] << GOOD << ", " << answer[REGULAR] << REGULAR
-                  << ", " << answer[BAD] << BAD << "\n";
-    } catch(const std::exception &e) {
-        std::cout << e.what();
-    } catch(...) {
-        std::cout << "Error desconocido\n";
+    if (argc != NUM_PARAMS) {
+        std::cerr << "Error: argumentos inválidos>\n";
+        return ERROR;
     }
+//    const char *host = 0, *port = argv[1], *file_path = argv[2];
+
     return OK;
 }
