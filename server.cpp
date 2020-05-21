@@ -1,4 +1,6 @@
 #include <iostream>
+#include <exception>
+#include "server_orchestrator.h"
 
 #define OK 0
 #define ERROR 1
@@ -9,7 +11,20 @@ int main(int argc, char *argv[]) {
         std::cerr << "Error: argumentos inválidos>\n";
         return ERROR;
     }
-//    const char *host = 0, *port = argv[1], *file_path = argv[2];
+    ServerOrchestrator orchestrator;
+    const char *host = 0, *port = argv[1], *path = argv[2];
+
+    try {
+        orchestrator.parseNumbersFile(path);
+    } catch(const std::exception &e) {
+        std::cerr << e.what();
+    } catch(...) {
+        std::cerr << "Error desconocido\n";
+    }
+
+    // TODO: eliminar esto
+    std::cout << host << "\n";
+    std::cout << port << "\n";
 
     return OK;
 }

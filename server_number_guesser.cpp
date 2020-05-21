@@ -18,6 +18,10 @@ NumberGuesser::NumberGuesser(int number) : min_num(MIN_NUM), max_num(MAX_NUM) {
     if (hasRepeatedDigits(secret_number)) throw RepeatedDigitsError();
 }
 
+NumberGuesser::NumberGuesser(NumberGuesser &&other) {
+    secret_number = std::move(other.secret_number);
+}
+
 const bool NumberGuesser::isOutOfRange(const int& number) const {
     return (number < min_num || number > max_num);
 }

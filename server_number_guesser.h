@@ -28,6 +28,9 @@ public:
     NumberGuesser(const NumberGuesser&) = delete;
     NumberGuesser& operator=(const NumberGuesser&) = delete;
 
+    // Constructor por movimiento
+    NumberGuesser(NumberGuesser&& other);
+
     // Cuenta la cantidad de digitos bien, regular y mal de 'number'
     // con respecto a 'secret_number'
     // Devuelve un map con la cantidad correspondiente a cada categoria
