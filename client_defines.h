@@ -1,6 +1,8 @@
 #define HELP            "AYUDA"
 #define SURRENDER       "RENDIRSE"
-#define NUMBER          "XXX"
+
+#define MIN_NUM     100
+#define MAX_NUM     999
 
 #define HELP_CHAR       'h'
 #define SURRENDER_CHAR  's'
