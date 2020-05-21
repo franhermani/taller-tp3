@@ -1,5 +1,6 @@
 #include <iostream>
 #include <exception>
+#include "server_defines.h"
 #include "server_orchestrator.h"
 #include "common_file.h"
 
@@ -9,7 +10,7 @@
 
 int main(int argc, char *argv[]) {
     if (argc != NUM_PARAMS) {
-        std::cerr << "Error: argumentos inválidos>\n";
+        std::cerr << "Error: argumentos inválidos\n";
         return ERROR;
     }
     const char *host = 0, *port = argv[1], *path = argv[2];
@@ -18,10 +19,16 @@ int main(int argc, char *argv[]) {
         File file(path);
         ServerOrchestrator orchestrator(file);
         orchestrator.parseNumbersFile();
+
+        std::string command;
+        while (getline(std::cin, command)) {
+            if (command == EXIT_CHAR) break;
+            // TODO: recibir conexiones de clientes
+        }
         orchestrator.printGamesPlayedStats();
-    } catch(const std::exception &e) {
+    } catch (const std::exception &e) {
         std::cerr << e.what();
-    } catch(...) {
+    } catch (...) {
         std::cerr << "Error desconocido\n";
     }
     // TODO: eliminar esto
