@@ -1,5 +1,3 @@
-#define _POSIX_C_SOURCE 200112L
-
 #include <iostream>
 #include <string.h>
 #include <unistd.h>
@@ -50,15 +48,15 @@ void Socket::closeSocketDescriptor() {
 
 void Socket::_resolve_addr(const char *host, const char *port) {
     struct addrinfo *ai_list, *ptr;
-    int sd, status;
+    int sd_tmp, status;
 
-    if ((status == getaddrinfo(host, port, &hints, &ai_list)) != 0)
+    if ((status = getaddrinfo(host, port, &hints, &ai_list)) != 0)
         throw SocketError("Error en getaddrinfo: %s\n", gai_strerror(status));
 
     for (ptr = ai_list; ptr != NULL; ptr = ptr->ai_next) {
-        sd = socket(ptr->ai_family, ptr->ai_socktype, ptr->ai_protocol);
-        if (sd == -1) continue;
-        this->sd = sd;
+        sd_tmp = socket(ptr->ai_family, ptr->ai_socktype, ptr->ai_protocol);
+        if (sd_tmp == -1) continue;
+        sd = sd_tmp;
 
         if (is_server) {
             if (_bind(ptr->ai_addr, ptr->ai_addrlen) == OK) break;
@@ -67,7 +65,7 @@ void Socket::_resolve_addr(const char *host, const char *port) {
         }
     }
     freeaddrinfo(ai_list);
-    if (this->sd == -1) throw SocketError("No hay conexiones disponibles\n");
+    if (sd == -1) throw SocketError("No hay conexiones disponibles\n");
 }
 
 const int Socket::_bind(struct sockaddr *addr, const socklen_t len) {
@@ -108,8 +106,9 @@ Socket Socket::acceptClients() {
     return std::move(accepted_socket);
 }
 
-const int Socket::sendBytes(const char *buffer, const int length) {
-    int tot_bytes_sent = 0, bytes_sent = 0;
+const int Socket::sendBytes(const char *buffer, const size_t length) {
+    int bytes_sent = 0;
+    size_t tot_bytes_sent = 0;
     bool socket_closed = false, socket_error = false;
 
     while (tot_bytes_sent < length && (! socket_closed) && (! socket_error)) {
@@ -123,16 +122,15 @@ const int Socket::sendBytes(const char *buffer, const int length) {
             tot_bytes_sent += bytes_sent;
         }
     }
-    if (socket_closed || socket_error) {
-        shutdownChannel(SHUT_RDWR);
-        closeSocketDescriptor();
+    if (socket_closed || socket_error)
         throw SocketError("Error al enviar el mensaje\n");
-    }
+
     return tot_bytes_sent;
 }
 
-const int Socket::receiveBytes(char *buffer, const int length) {
-    int tot_bytes_recv = 0, bytes_recv = 0;
+const int Socket::receiveBytes(char *buffer, const size_t length) {
+    int bytes_recv = 0;
+    size_t tot_bytes_recv = 0;
     bool socket_closed = false, socket_error = false;
 
     while ((! socket_closed) && (! socket_error)) {
@@ -146,10 +144,8 @@ const int Socket::receiveBytes(char *buffer, const int length) {
             tot_bytes_recv += bytes_recv;
         }
     }
-    if (socket_error) {
-        shutdownChannel(SHUT_RDWR);
-        closeSocketDescriptor();
+    if (socket_error)
         throw SocketError("Error al recibir el mensaje\n");
-    }
+
     return tot_bytes_recv;
 }

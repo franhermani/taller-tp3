@@ -1,9 +1,9 @@
 #ifndef SOCKET_H
 #define SOCKET_H
 
-#include <netdb.h>
-#include <sys/socket.h>
 #include <sys/types.h>
+#include <sys/socket.h>
+#include <netdb.h>
 
 class Socket {
     int sd;
@@ -72,12 +72,12 @@ public:
     // Intenta enviar 'length' bytes almacenados en 'buffer' a otro socket
     // Devuelve la cantidad de bytes enviados
     // Lanza SocketError en caso de error
-    const int sendBytes(const char *buffer, const int length);
+    const int sendBytes(const char *buffer, const size_t length);
 
     // Intenta recibir 'length' bytes de otro socket y almacenarlos en 'buffer'
     // Devuelve la cantidad de bytes recibidos
     // Lanza SocketError en caso de error
-    const int receiveBytes(char *buffer, const int length);
+    const int receiveBytes(char *buffer, const size_t length);
 };
 
 #endif // SOCKET_H
