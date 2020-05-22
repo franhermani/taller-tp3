@@ -23,8 +23,8 @@ Socket::Socket(const int sd) {
     this->sd = sd;
 }
 
-Socket::Socket(Socket &&other) {
-    sd = std::move(other.sd);
+Socket::Socket(Socket &&other) : sd(other.sd) {
+    other.sd = -1;
 }
 
 Socket& Socket::operator=(Socket &&other) {
