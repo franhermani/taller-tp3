@@ -31,10 +31,9 @@ Socket& Socket::operator=(Socket &&other) {
 }
 
 Socket::~Socket() {
-    if (sd != -1) {
-        shutdownChannel(SHUT_RDWR);
-        closeSocketDescriptor();
-    }
+    if (sd == -1) return;
+    shutdownChannel(SHUT_RDWR);
+    closeSocketDescriptor();
 }
 
 void Socket::shutdownChannel(const int channel) {
