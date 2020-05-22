@@ -24,6 +24,11 @@ Link GitHub: https://github.com/franhermani/taller-tp3
 
 7. Creación de la clase SocketError y uso de ella en la clase Socket
 
+8. Testeo del socket en una ejecución 1 a 1 de cliente - servidor
+   Esto me llevó a varias correcciones, como:
+   - Constructor y destructor adecuados
+   - Shutdown y close como métodos privados
+
 
 # Puntos de interés
 

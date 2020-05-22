@@ -6,7 +6,6 @@
 #define RET 0
 #define NUM_PARAMS 3
 
-/*
 int main(int argc, char *argv[]) {
     if (argc != NUM_PARAMS) {
         std::cerr << "Error: argumentos inválidos\n";
@@ -26,20 +25,5 @@ int main(int argc, char *argv[]) {
             std::cout << "Comando recibido OK\n";
         }
     }
-    return RET;
-}
-*/
-
-int main(int argc, char *argv[]) {
-    const char *buffer_send = "Hola mundo!\n";
-    char buffer_receive[12];
-
-    Socket socket("localhost", "8080");
-
-    socket.sendBytes(buffer_send, strlen(buffer_send));
-    socket.receiveBytes(buffer_receive, 12);
-
-    std::cout << buffer_receive << "\n";
-
     return RET;
 }
