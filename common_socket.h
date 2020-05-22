@@ -25,6 +25,16 @@ class Socket {
     // Devuelve OK o lanza SocketError en caso de error
     const int _connect(struct sockaddr *addr, const socklen_t len);
 
+    // Cierra el canal 'channel', el cual puede ser:
+    // - SHUT_RD    --> Lectura
+    // - SHUT_WR    --> Escritura
+    // - SHUT_RDWR  --> Lectura y Escritura
+    // Lanza SocketError en caso de error
+    void shutdownChannel(const int channel);
+
+    // Cierra el socket descriptor y le asigna un valor de -1
+    void closeSocketDescriptor();
+
 public:
     // Constructor
     // Crea un socket asociado al 'host' y 'port' y bindea (si es server)
@@ -46,17 +56,6 @@ public:
     // Destructor
     // Cierra el socket descriptor (en caso de que no se haya cerrado antes)
     ~Socket();
-
-    // Cierra el canal 'channel', el cual puede ser:
-    // - SHUT_RD    --> Lectura
-    // - SHUT_WR    --> Escritura
-    // - SHUT_RDWR  --> Lectura y Escritura
-    // Lanza SocketError en caso de error
-    void shutdownChannel(const int channel);
-
-    // Cierra el socket descriptor y le asigna un valor de -1
-    // Lanza SocketError en caso de error
-    void closeSocketDescriptor();
 
     // [Solo servidor]
     // Escucha conexiones entrantes de clientes (hasta MAX_LISTEN_QUEUE_LEN)

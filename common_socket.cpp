@@ -19,9 +19,7 @@ Socket::Socket(const char* host, const char* port) :
     _resolve_addr(host, port);
 }
 
-Socket::Socket(const int sd) {
-    this->sd = sd;
-}
+Socket::Socket(const int sd) : sd(sd) {}
 
 Socket::Socket(Socket &&other) : sd(other.sd) {
     other.sd = -1;
@@ -33,7 +31,10 @@ Socket& Socket::operator=(Socket &&other) {
 }
 
 Socket::~Socket() {
-    if (sd != -1) close(sd);
+    if (sd != -1) {
+        shutdownChannel(SHUT_RDWR);
+        closeSocketDescriptor();
+    }
 }
 
 void Socket::shutdownChannel(const int channel) {
@@ -42,7 +43,7 @@ void Socket::shutdownChannel(const int channel) {
 }
 
 void Socket::closeSocketDescriptor() {
-    if (close(sd) == -1) throw SocketError("Error al cerrar el socket\n");
+    close(sd);
     sd = -1;
 }
 
@@ -107,45 +108,40 @@ Socket Socket::acceptClients() {
 }
 
 const int Socket::sendBytes(const char *buffer, const size_t length) {
-    int bytes_sent = 0;
-    size_t tot_bytes_sent = 0;
+    int bytes = 0;
+    size_t tot_bytes = 0;
     bool socket_closed = false, socket_error = false;
 
-    while (tot_bytes_sent < length && (! socket_closed) && (! socket_error)) {
-        bytes_sent = send(sd, &buffer[tot_bytes_sent], length - tot_bytes_sent,
-                          MSG_NOSIGNAL);
-        if (bytes_sent == -1) {
+    while (tot_bytes < length && (! socket_closed) && (! socket_error)) {
+        bytes = send(sd, &buffer[tot_bytes], length - tot_bytes, MSG_NOSIGNAL);
+        if (bytes == -1) {
             socket_error = true;
-        } else if (bytes_sent == 0) {
+        } else if (bytes == 0) {
             socket_closed = true;
         } else {
-            tot_bytes_sent += bytes_sent;
+            tot_bytes += bytes;
         }
     }
     if (socket_closed || socket_error)
         throw SocketError("Error al enviar el mensaje\n");
 
-    return tot_bytes_sent;
+    return tot_bytes;
 }
 
 const int Socket::receiveBytes(char *buffer, const size_t length) {
-    int bytes_recv = 0;
-    size_t tot_bytes_recv = 0;
-    bool socket_closed = false, socket_error = false;
+    int bytes = 0;
+    size_t tot_bytes = 0;
+    bool socket_error = false;
 
-    while ((! socket_closed) && (! socket_error)) {
-        bytes_recv = recv(sd, &buffer[tot_bytes_recv],
-                          length - tot_bytes_recv, 0);
-        if (bytes_recv == -1) {
+    while ((tot_bytes < length) && (! socket_error)) {
+        bytes = recv(sd, &buffer[tot_bytes], length - tot_bytes, 0);
+        if (bytes == -1) {
             socket_error = true;
-        } else if (bytes_recv == 0) {
-            socket_closed = true;
         } else {
-            tot_bytes_recv += bytes_recv;
+            tot_bytes += bytes;
         }
     }
-    if (socket_error)
-        throw SocketError("Error al recibir el mensaje\n");
+    if (socket_error) throw SocketError("Error al recibir el mensaje\n");
 
-    return tot_bytes_recv;
+    return tot_bytes;
 }
