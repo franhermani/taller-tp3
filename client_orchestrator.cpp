@@ -14,7 +14,7 @@ const bool ClientOrchestrator::isValidNumber(std::string command) {
     try {
         int number = std::stoi(command);
         if (number < MIN_NUM || number > MAX_NUM) return false;
-    } catch(std::invalid_argument) {
+    } catch(...) {
         return false;
     }
     return true;

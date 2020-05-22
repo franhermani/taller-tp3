@@ -13,7 +13,8 @@ int main(int argc, char *argv[]) {
         std::cerr << "Error: argumentos inválidos\n";
         return ERROR;
     }
-    const char *host = 0, *port = argv[1], *path = argv[2];
+//    const char *host = 0, *port = argv[1];
+    const char *path = argv[2];
 
     try {
         File file(path);
@@ -28,12 +29,10 @@ int main(int argc, char *argv[]) {
         orchestrator.printGamesPlayedStats();
     } catch (const std::exception &e) {
         std::cerr << e.what();
+        return ERROR;
     } catch (...) {
         std::cerr << "Error desconocido\n";
+        return ERROR;
     }
-    // TODO: eliminar esto
-    std::cout << host << "\n";
-    std::cout << port << "\n";
-
     return OK;
 }
