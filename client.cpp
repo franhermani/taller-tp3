@@ -1,35 +1,39 @@
 #include <iostream>
 #include <string.h>
-#include <exception>
 #include "client.h"
 #include "common_defines.h"
-#include "common_socket.h"
+#include "common_socket_error.h"
 
 #define RET 0
 #define NUM_PARAMS 3
+#define BUF_MAX_SIZE 256
+#define FIRST_SIZE 4
 
 int main(int argc, char *argv[]) {
     if (argc != NUM_PARAMS) {
         std::cerr << "Error: argumentos inválidos\n";
         return RET;
     }
-//    const char *host = argv[1], *port = argv[2];
+    const char *host = argv[1], *port = argv[2];
 
-    Client client;
-
-    std::string command;
-    while (getline(std::cin, command)) {
-        if (! client.isValidCommand(command)) {
-            std::cout << "Error: comando inválido. Escriba AYUDA "
-                         "para obtener ayuda\n";
-        } else {
-            client.interactWithServer(command);
+    try {
+        Client client(host, port);
+        std::string command;
+        while (getline(std::cin, command)) {
+            if (! client.isValidCommand(command)) {
+                std::cout << "Error: comando inválido. Escriba AYUDA "
+                             "para obtener ayuda\n";
+            } else {
+                client.interactWithServer(command);
+            }
         }
+    } catch(SocketError& e) {
+        std::cerr << e.what() << "\n";
     }
     return RET;
 }
 
-Client::Client() {}
+Client::Client(const char *host, const char *port) : socket(host, port) {}
 
 const bool Client::isValidCommand(const std::string command)
 const {
@@ -49,8 +53,20 @@ const {
 
 void Client::interactWithServer(const std::string command) {
     ByteMsg byte_msg = protocol.encodeMessage(command);
-    for (int i=0; i < byte_msg.pos; i++)
-        printf("%02X ", (unsigned) (unsigned char) byte_msg.value[i]);
-    printf("\n");
-    // TODO: enviar comando al server
+    sendMessage(byte_msg);
+    receiveMessage();
+}
+
+void Client::sendMessage(ByteMsg byte_msg) {
+    socket.sendBytes(byte_msg.value, (size_t) byte_msg.pos);
+}
+
+void Client::receiveMessage() {
+    char buffer_length[FIRST_SIZE];
+    char buffer_value[BUF_MAX_SIZE];
+    socket.receiveBytes(buffer_length, FIRST_SIZE);
+    uint32_t length = protocol.decodeMessageLength(buffer_length);
+    socket.receiveBytes(buffer_value, (size_t) length);
+    buffer_value[length] = '\0';
+    std::cout << buffer_value << "\n";
 }

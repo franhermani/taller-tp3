@@ -3,13 +3,16 @@
 
 #include <string>
 #include "client_protocol.h"
+#include "common_socket.h"
 
 class Client {
     ClientProtocol protocol;
+    Socket socket;
 
 public:
     // Constructor
-    Client();
+    // Asocia al cliente al 'host' y 'port' recibidos por consola
+    Client(const char *host, const char *port);
 
     // Constructor y asignacion por copia deshabilitados
     Client(const Client& other) = delete;
@@ -23,6 +26,12 @@ public:
 
     // Interactua con el servidor (envia y recibe mensajes)
     void interactWithServer(const std::string command);
+
+    // Envia un mensaje al servidor
+    void sendMessage(ByteMsg byte_msg);
+
+    // Recibe un mensaje del servidor
+    void receiveMessage();
 };
 
 #endif // CLIENT_H
