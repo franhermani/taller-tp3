@@ -67,7 +67,6 @@ void Server::interactWithClients() {
     Socket socket_client = socket_acceptor.acceptClients();
 
     socket_client.receiveBytes(buffer1, FIRST_SIZE);
-    std::cout << "Recibido FIRST_SIZE OK del cliente\n";
     uint32_t length = protocol.decodeMessageLength(buffer1);
 
     if (length > 0) {
@@ -75,7 +74,6 @@ void Server::interactWithClients() {
     }
     ByteMsg byte_msg = protocol.encodeMessage(buffer1);
     socket_client.sendBytes(byte_msg.value, byte_msg.pos + 1);
-    std::cout << "Envio " << byte_msg.pos << " bytes al cliente\n";
 }
 
 void Server::printGamesPlayedStats() {

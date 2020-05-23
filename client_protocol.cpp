@@ -1,4 +1,3 @@
-#include <iostream>
 #include <string.h>
 #include <map>
 #include <stdint.h>
@@ -21,15 +20,12 @@ ByteMsg ClientProtocol::encodeMessage(const char *message) {
         byteMsg.value[++byteMsg.pos] = number_network & 0xFF;
         byteMsg.value[++byteMsg.pos] = (number_network >> 8);
     }
-    // TODO: esto creo que no va
-    byteMsg.value[++byteMsg.pos] = '\0';
-
     return byteMsg;
 }
 
 std::string ClientProtocol::decodeMessageValue(const char *message) {
-    std::string hello = "Hola mundo";
-    return hello;
+    std::string str(message);
+    return str;
 }
 
 uint32_t ClientProtocol::decodeMessageLength(const char *message) {
