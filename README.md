@@ -28,6 +28,9 @@ Link GitHub: https://github.com/franhermani/taller-tp3
    Esto me llevó a varias correcciones, como:
    - Constructor y destructor adecuados
    - Shutdown y close como métodos privados
+   
+9. Construcción de la clase base Protocol y sus derivadas ClientProtocol
+   y ServerProtocol (polimorfismo para los métodos)
 
 
 # Puntos de interés

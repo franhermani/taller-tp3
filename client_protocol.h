@@ -6,8 +6,11 @@
 
 class ClientProtocol : public Protocol {
 public:
+    // Constructor
+    ClientProtocol();
+
     // Codifica un mensaje segun el protocolo
-    virtual void encodeMessage(const char *message) override;
+    virtual ByteMsg encodeMessage(const std::string message) override;
 
     // Decodifica un mensaje segun el protocolo
     virtual std::string decodeMessage(const char *byte_msg) override;

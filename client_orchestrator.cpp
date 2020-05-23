@@ -6,11 +6,13 @@
 
 ClientOrchestrator::ClientOrchestrator() {}
 
-const bool ClientOrchestrator::isValidCommand(std::string command) {
+const bool ClientOrchestrator::isValidCommand(const std::string command)
+const {
     return (command == HELP || command == SURRENDER || isValidNumber(command));
 }
 
-const bool ClientOrchestrator::isValidNumber(std::string command) {
+const bool ClientOrchestrator::isValidNumber(const std::string command)
+const {
     try {
         int number = std::stoi(command);
         if (number < MIN_NUM || number > MAX_NUM) return false;
@@ -18,4 +20,8 @@ const bool ClientOrchestrator::isValidNumber(std::string command) {
         return false;
     }
     return true;
+}
+
+ByteMsg ClientOrchestrator::applyProtocol(const std::string command) {
+    return protocol.encodeMessage(command);
 }
