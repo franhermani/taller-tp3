@@ -10,18 +10,25 @@ ServerProtocol::ServerProtocol() {}
 
 ByteMsg ServerProtocol::encodeMessage(const std::string message) {
     cleanByteMsg();
-    std::map<std::string, char> commands =
-            {{HELP, HELP_CHAR}, {SURRENDER, SURRENDER_CHAR}};
+    std::map<char, const char *> responses =
+            {{HELP_CHAR, "Comandos válidos:\n\tAYUDA: despliega la lista de"
+                         " comandos válidos\n\tRENDIRSE: pierde el juego"
+                         " automáticamente\n\tXXX: Número de 3 cifras a ser"
+                         " enviado al servidor para adivinar el número"
+                         " secreto"},
+             {SURRENDER_CHAR, "Perdiste"}};
 
-    if (commands.count(message)) {
-        byteMsg.value[byteMsg.pos] = commands[message];
-    } else {
-        byteMsg.value[byteMsg.pos] = NUMBER_CHAR;
-        uint16_t number_network = htons(atoi(message.c_str()));
-        byteMsg.value[++byteMsg.pos] = number_network & 0xFF;
-        byteMsg.value[++byteMsg.pos] = (number_network >> 8);
-    }
-    byteMsg.value[++byteMsg.pos] = '\0';
+    const char *response = responses[message.c_str()[0]];
+    uint32_t length_network = htonl(strlen(response));
+
+    byteMsg.value[byteMsg.pos] = (length_network & 0x000000FF);
+    byteMsg.value[++byteMsg.pos] = (length_network & 0x0000FF00) >> 8;
+    byteMsg.value[++byteMsg.pos] = (length_network & 0x00FF0000) >> 16;
+    byteMsg.value[++byteMsg.pos] = (length_network & 0xFF000000) >> 24;
+
+    size_t i;
+    for (i = 0; i < strlen(response); i ++)
+        byteMsg.value[++byteMsg.pos] = response[i];
 
     return byteMsg;
 }
@@ -32,5 +39,8 @@ std::string ServerProtocol::decodeMessageValue(const char *message) {
 }
 
 uint32_t ServerProtocol::decodeMessageLength(const char *message) {
-    return ntohl(atoi(message));
+    std::map<char, uint32_t> lengths =
+            {{HELP_CHAR, 0}, {SURRENDER_CHAR, 0}, {NUMBER_CHAR, NUM_DIGITS}};
+
+    return lengths[message[0]];
 }
