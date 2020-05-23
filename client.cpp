@@ -54,25 +54,28 @@ const {
 }
 
 void Client::interactWithServer(const std::string& command) {
-    ByteMsg byte_msg = protocol.encodeMessage(command);
+    ByteMsg byte_msg = protocol.encodeMessage(command.c_str());
     sendMessage(byte_msg);
     receiveMessage();
 }
 
 void Client::sendMessage(ByteMsg& byte_msg) {
     socket.sendBytes(byte_msg.value, (size_t) byte_msg.pos);
+    std::cout << "Envio OK al server\n";
 }
 
 void Client::receiveMessage() {
-    char buffer_length[FIRST_SIZE + 1];
+    char buffer_length[FIRST_SIZE];
     char buffer_value[BUF_MAX_SIZE];
 
     socket.receiveBytes(buffer_length, FIRST_SIZE);
-    buffer_length[FIRST_SIZE] = '\0';
+    std::cout << "Recibido FIRST_SIZE OK del server\n";
 
     uint32_t length = protocol.decodeMessageLength(buffer_length);
     socket.receiveBytes(buffer_value, (size_t) length);
-    buffer_value[length] = '\0';
+    std::cout << "Recibido el mensaje OK del server\n";
 
-    std::cout << buffer_value << "\n";
+    std::string value = protocol.decodeMessageValue(buffer_value);
+
+    std::cout << value << "\n";
 }

@@ -20,7 +20,7 @@ protected:
 public:
     // Codifica un mensaje segun el protocolo
     // Metodo a definir por las clases derivadas
-    virtual ByteMsg encodeMessage(const std::string message) = 0;
+    virtual ByteMsg encodeMessage(const char *message) = 0;
 
     // Decodifica el contenido de un mensaje segun el protocolo
     // Metodo a definir por las clases derivadas

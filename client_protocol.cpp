@@ -1,3 +1,4 @@
+#include <iostream>
 #include <string.h>
 #include <map>
 #include <stdint.h>
@@ -8,16 +9,15 @@
 
 ClientProtocol::ClientProtocol() {}
 
-ByteMsg ClientProtocol::encodeMessage(const std::string message) {
+ByteMsg ClientProtocol::encodeMessage(const char *message) {
     cleanByteMsg();
-    std::map<std::string, char> commands =
-            {{HELP, HELP_CHAR}, {SURRENDER, SURRENDER_CHAR}};
-
-    if (commands.count(message)) {
-        byteMsg.value[byteMsg.pos] = commands[message];
+    if (strcmp(message, HELP) == 0) {
+        byteMsg.value[byteMsg.pos] = HELP_CHAR;
+    } else if (strcmp(message, SURRENDER) == 0) {
+        byteMsg.value[byteMsg.pos] = SURRENDER_CHAR;
     } else {
         byteMsg.value[byteMsg.pos] = NUMBER_CHAR;
-        uint16_t number_network = htons(atoi(message.c_str()));
+        uint16_t number_network = htons(atoi(message));
         byteMsg.value[++byteMsg.pos] = number_network & 0xFF;
         byteMsg.value[++byteMsg.pos] = (number_network >> 8);
     }
@@ -32,5 +32,8 @@ std::string ClientProtocol::decodeMessageValue(const char *message) {
 }
 
 uint32_t ClientProtocol::decodeMessageLength(const char *message) {
-    return ntohl(atoi(message));
+    uint32_t length = message[0] | (message[1] << 8) |
+            (message[2] << 16) | (message[3] << 24);
+
+    return ntohl(length);
 }

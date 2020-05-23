@@ -15,7 +15,7 @@ public:
     ServerProtocol& operator=(const ServerProtocol&) = delete;
 
     // Codifica un mensaje segun el protocolo
-    virtual ByteMsg encodeMessage(const std::string message) override;
+    virtual ByteMsg encodeMessage(const char *message) override;
 
     // Decodifica un mensaje segun el protocolo
     virtual std::string decodeMessageValue(const char *message) override;

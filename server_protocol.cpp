@@ -8,17 +8,13 @@
 
 ServerProtocol::ServerProtocol() {}
 
-ByteMsg ServerProtocol::encodeMessage(const std::string message) {
+ByteMsg ServerProtocol::encodeMessage(const char *message) {
     cleanByteMsg();
     std::map<char, const char *> responses =
-            {{HELP_CHAR, "Comandos válidos:\n\tAYUDA: despliega la lista de"
-                         " comandos válidos\n\tRENDIRSE: pierde el juego"
-                         " automáticamente\n\tXXX: Número de 3 cifras a ser"
-                         " enviado al servidor para adivinar el número"
-                         " secreto"},
+            {{HELP_CHAR, "Enviando ayuda"},
              {SURRENDER_CHAR, "Perdiste"}};
 
-    const char *response = responses[message.c_str()[0]];
+    const char *response = responses[message[0]];
     uint32_t length_network = htonl(strlen(response));
 
     byteMsg.value[byteMsg.pos] = (length_network & 0x000000FF);
@@ -40,7 +36,7 @@ std::string ServerProtocol::decodeMessageValue(const char *message) {
 
 uint32_t ServerProtocol::decodeMessageLength(const char *message) {
     std::map<char, uint32_t> lengths =
-            {{HELP_CHAR, 0}, {SURRENDER_CHAR, 0}, {NUMBER_CHAR, NUM_DIGITS}};
+            {{HELP_CHAR, 0}, {SURRENDER_CHAR, 0}, {NUMBER_CHAR, sizeof(uint16_t)}};
 
     return lengths[message[0]];
 }
