@@ -24,7 +24,7 @@ int main(int argc, char *argv[]) {
                 std::cout << "Error: comando inválido. Escriba AYUDA "
                              "para obtener ayuda\n";
             } else {
-                client.interactWithServer(command);
+                if (! client.interactWithServer(command)) break;
             }
         }
     } catch(SocketError& e) {
@@ -53,17 +53,21 @@ const {
     return true;
 }
 
-void Client::interactWithServer(const std::string& command) {
+const bool Client::interactWithServer(const std::string& command) {
     ByteMsg byte_msg = protocol.encodeMessage(command.c_str());
     sendMessage(byte_msg);
-    receiveMessage();
+    std::string response = receiveMessage();
+
+    if (response == WIN_MSG || response == LOSE_MSG) return false;
+
+    return true;
 }
 
 void Client::sendMessage(ByteMsg& byte_msg) {
     socket.sendBytes(byte_msg.value, byte_msg.pos + 1);
 }
 
-void Client::receiveMessage() {
+const std::string Client::receiveMessage() {
     char buffer_length[FIRST_SIZE];
     char buffer_value[BUF_MAX_SIZE];
 
@@ -73,5 +77,8 @@ void Client::receiveMessage() {
     socket.receiveBytes(buffer_value, length);
     buffer_value[length] = '\0';
 
-    std::cout << protocol.decodeMessageValue(buffer_value) << "\n";
+    std::string response = protocol.decodeMessageValue(buffer_value);
+    std::cout << response << "\n";
+
+    return response;
 }

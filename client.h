@@ -25,13 +25,15 @@ public:
     const bool isValidNumber(const std::string& command) const;
 
     // Interactua con el servidor (envia y recibe mensajes)
-    void interactWithServer(const std::string& command);
+    // Devuelve false si termina el juego (esto es, el server envia
+    // 'Ganaste' o 'Perdiste') o true en cualquier otro caso
+    const bool interactWithServer(const std::string& command);
 
     // Envia un mensaje al servidor
     void sendMessage(ByteMsg& byte_msg);
 
     // Recibe un mensaje del servidor
-    void receiveMessage();
+    const std::string receiveMessage();
 };
 
 #endif // CLIENT_H
