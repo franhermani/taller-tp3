@@ -31,5 +31,4 @@ public:
     Thread& operator=(Thread&& other);
 };
 
-
 #endif // THREAD_H
