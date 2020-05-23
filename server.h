@@ -1,11 +1,11 @@
-#ifndef SERVER_ORCHESTRATOR_H
-#define SERVER_ORCHESTRATOR_H
+#ifndef SERVER_H
+#define SERVER_H
 
 #include <vector>
 #include "server_number_guesser.h"
 #include "common_file.h"
 
-class ServerOrchestrator {
+class Server {
     File& numbers_file;
     std::vector<NumberGuesser> numbers;
     int num_winners;
@@ -13,18 +13,21 @@ class ServerOrchestrator {
 
 public:
     // Constructor
-    explicit ServerOrchestrator(File& file);
+    explicit Server(File& file);
 
     // Constructor y asignacion por copia deshabilitados
-    ServerOrchestrator(const ServerOrchestrator& other) = delete;
-    ServerOrchestrator& operator=(const ServerOrchestrator& other) = delete;
+    Server(const Server& other) = delete;
+    Server& operator=(const Server& other) = delete;
 
     // Lee el archivo de numeros, crea un NumberGuesser para cada uno
     // y lo almacena en el vector 'numbers'
     void parseNumbersFile();
 
+    // Interactua con los clientes (envia y recibe mensajes)
+    void interactWithClients();
+
     // Imprime por pantalla las estadisticas de las partidas jugadas
     void printGamesPlayedStats();
 };
 
-#endif // SERVER_ORCHESTRATOR_H
+#endif // SERVER_H

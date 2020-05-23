@@ -29,6 +29,8 @@ int main(int argc, char *argv[]) {
         }
     } catch(SocketError& e) {
         std::cerr << e.what() << "\n";
+    } catch(...) {
+        std::cerr << "Error desconocido\n";
     }
     return RET;
 }
