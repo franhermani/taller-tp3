@@ -35,12 +35,12 @@ int main(int argc, char *argv[]) {
 
 Client::Client(const char *host, const char *port) : socket(host, port) {}
 
-const bool Client::isValidCommand(const std::string command)
+const bool Client::isValidCommand(const std::string& command)
 const {
     return (command == HELP || command == SURRENDER || isValidNumber(command));
 }
 
-const bool Client::isValidNumber(const std::string command)
+const bool Client::isValidNumber(const std::string& command)
 const {
     try {
         int number = std::stoi(command);
@@ -51,22 +51,26 @@ const {
     return true;
 }
 
-void Client::interactWithServer(const std::string command) {
+void Client::interactWithServer(const std::string& command) {
     ByteMsg byte_msg = protocol.encodeMessage(command);
     sendMessage(byte_msg);
     receiveMessage();
 }
 
-void Client::sendMessage(ByteMsg byte_msg) {
+void Client::sendMessage(ByteMsg& byte_msg) {
     socket.sendBytes(byte_msg.value, (size_t) byte_msg.pos);
 }
 
 void Client::receiveMessage() {
-    char buffer_length[FIRST_SIZE];
+    char buffer_length[FIRST_SIZE + 1];
     char buffer_value[BUF_MAX_SIZE];
+
     socket.receiveBytes(buffer_length, FIRST_SIZE);
+    buffer_length[FIRST_SIZE] = '\0';
+
     uint32_t length = protocol.decodeMessageLength(buffer_length);
     socket.receiveBytes(buffer_value, (size_t) length);
     buffer_value[length] = '\0';
+
     std::cout << buffer_value << "\n";
 }

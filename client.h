@@ -19,16 +19,16 @@ public:
     Client& operator=(const Client& other) = delete;
 
     // Determina si un comando recibido por stdin es valido o no
-    const bool isValidCommand(const std::string command) const;
+    const bool isValidCommand(const std::string& command) const;
 
     // Determina si un numero recibido por stdin es valido o no
-    const bool isValidNumber(const std::string command) const;
+    const bool isValidNumber(const std::string& command) const;
 
     // Interactua con el servidor (envia y recibe mensajes)
-    void interactWithServer(const std::string command);
+    void interactWithServer(const std::string& command);
 
     // Envia un mensaje al servidor
-    void sendMessage(ByteMsg byte_msg);
+    void sendMessage(ByteMsg& byte_msg);
 
     // Recibe un mensaje del servidor
     void receiveMessage();
