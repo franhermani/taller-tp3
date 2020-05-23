@@ -14,7 +14,7 @@ class Protocol {
 protected:
     ByteMsg byteMsg;
 
-    // Limpia el struct ByteMsg llenándolo con ceros y reseteando sus atributos
+    // Limpia el struct ByteMsg llenándolo con ceros y reseteando su posicion
     void cleanByteMsg();
 
 public:
