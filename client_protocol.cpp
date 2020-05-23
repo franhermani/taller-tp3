@@ -26,7 +26,11 @@ ByteMsg ClientProtocol::encodeMessage(const std::string message) {
     return byteMsg;
 }
 
-std::string ClientProtocol::decodeMessage(const char *byte_msg) {
-    std::string message = "Hola mundo";
-    return message;
+std::string ClientProtocol::decodeMessageValue(const char *message) {
+    std::string hello = "Hola mundo";
+    return hello;
+}
+
+uint32_t ClientProtocol::decodeMessageLength(const char *message) {
+    return ntohl(atoi(message));
 }

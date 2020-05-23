@@ -2,6 +2,7 @@
 #define CLIENT_PROTOCOL_H
 
 #include <string>
+#include <stdint.h>
 #include "common_protocol.h"
 
 class ClientProtocol : public Protocol {
@@ -13,7 +14,11 @@ public:
     virtual ByteMsg encodeMessage(const std::string message) override;
 
     // Decodifica un mensaje segun el protocolo
-    virtual std::string decodeMessage(const char *byte_msg) override;
+    virtual std::string decodeMessageValue(const char *message) override;
+
+    // Decodifica el largo del string a recibir
+    // Devuelve el largo en un entero de 4 bytes
+    virtual uint32_t decodeMessageLength(const char *message) override;
 };
 
 #endif // CLIENT_PROTOCOL_H

@@ -22,6 +22,14 @@ const {
     return true;
 }
 
-ByteMsg ClientOrchestrator::encodeCommand(const std::string command) {
+ByteMsg ClientOrchestrator::encodeMessage(const std::string command) {
     return protocol.encodeMessage(command);
+}
+
+uint32_t ClientOrchestrator::decodeMessageLength(const char *message) {
+    return protocol.decodeMessageLength(message);
+}
+
+std::string ClientOrchestrator::decodeMessageValue(const char *message) {
+    return "Hola mundo\n";
 }

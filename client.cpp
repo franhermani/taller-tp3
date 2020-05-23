@@ -21,7 +21,10 @@ int main(int argc, char *argv[]) {
             std::cout << "Error: comando inválido. Escriba AYUDA "
                          "para obtener ayuda\n";
         } else {
-            ByteMsg byte_msg = orchestrator.encodeCommand(command);
+            ByteMsg byte_msg = orchestrator.encodeMessage(command);
+            for (int i=0; i < byte_msg.pos; i++)
+                printf("%02X ", (unsigned) (unsigned char) byte_msg.value[i]);
+            printf("\n");
             // TODO: enviar comando al server
         }
     }

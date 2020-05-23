@@ -22,9 +22,13 @@ public:
     // Metodo a definir por las clases derivadas
     virtual ByteMsg encodeMessage(const std::string message) = 0;
 
-    // Decodifica un mensaje segun el protocolo
+    // Decodifica el contenido de un mensaje segun el protocolo
     // Metodo a definir por las clases derivadas
-    virtual std::string decodeMessage(const char *byte_msg) = 0;
+    virtual std::string decodeMessageValue(const char *message) = 0;
+
+    // Decodifica la longitud de un mensaje segun el protocolo
+    // Metodo a definir por las clases derivadas
+    virtual uint32_t decodeMessageLength(const char *message) = 0;
 };
 
 #endif // COMMON_PROTOCOL_H
