@@ -34,8 +34,8 @@ ByteMsg ServerProtocol::encodeMessage(const char *message) {
 }
 
 std::string ServerProtocol::decodeMessageValue(const char *message) {
-    std::string hello = "Hola mundo";
-    return hello;
+    uint16_t number = message[0] | (message[1] << 8);
+    return std::to_string(ntohs(number));
 }
 
 uint32_t ServerProtocol::decodeMessageLength(const char *message) {

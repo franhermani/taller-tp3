@@ -28,6 +28,9 @@ public:
     // Interactua con los clientes (envia y recibe mensajes)
     void interactWithClients();
 
+    // Recibe el numero enviado por el cliente
+    void processClientNumber(const int number);
+
     // Imprime por pantalla las estadisticas de las partidas jugadas
     void printGamesPlayedStats();
 };
