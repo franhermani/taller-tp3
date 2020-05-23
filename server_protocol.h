@@ -1,18 +1,18 @@
-#ifndef CLIENT_PROTOCOL_H
-#define CLIENT_PROTOCOL_H
+#ifndef SERVER_PROTOCOL_H
+#define SERVER_PROTOCOL_H
 
 #include <string>
 #include <stdint.h>
 #include "common_protocol.h"
 
-class ClientProtocol : public Protocol {
+class ServerProtocol : public Protocol {
 public:
     // Constructor
-    ClientProtocol();
+    ServerProtocol();
 
     // Constructor y asignacion por copia deshabilitados
-    ClientProtocol(const ClientProtocol&) = delete;
-    ClientProtocol& operator=(const ClientProtocol&) = delete;
+    ServerProtocol(const ServerProtocol&) = delete;
+    ServerProtocol& operator=(const ServerProtocol&) = delete;
 
     // Codifica un mensaje segun el protocolo
     virtual ByteMsg encodeMessage(const std::string message) override;
@@ -25,4 +25,4 @@ public:
     virtual uint32_t decodeMessageLength(const char *message) override;
 };
 
-#endif // CLIENT_PROTOCOL_H
+#endif // SERVER_PROTOCOL_H
