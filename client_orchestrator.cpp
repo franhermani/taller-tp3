@@ -22,6 +22,6 @@ const {
     return true;
 }
 
-ByteMsg ClientOrchestrator::applyProtocol(const std::string command) {
+ByteMsg ClientOrchestrator::encodeCommand(const std::string command) {
     return protocol.encodeMessage(command);
 }

@@ -1,5 +1,8 @@
-#include <string>
+#include <string.h>
 #include <map>
+#include <stdint.h>
+#include <cstring>
+#include <arpa/inet.h>
 #include "client_protocol.h"
 #include "common_defines.h"
 
@@ -14,7 +17,9 @@ ByteMsg ClientProtocol::encodeMessage(const std::string message) {
         byteMsg.value[byteMsg.pos] = commands[message];
     } else {
         byteMsg.value[byteMsg.pos] = NUMBER_CHAR;
-        // TODO: escribir el numero
+        uint16_t number_network = htons(atoi(message.c_str()));
+        byteMsg.value[++byteMsg.pos] = number_network & 0xFF;
+        byteMsg.value[++byteMsg.pos] = (number_network >> 8);
     }
     byteMsg.value[++byteMsg.pos] = '\0';
 

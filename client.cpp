@@ -21,8 +21,7 @@ int main(int argc, char *argv[]) {
             std::cout << "Error: comando inválido. Escriba AYUDA "
                          "para obtener ayuda\n";
         } else {
-            ByteMsg byte_msg = orchestrator.applyProtocol(command);
-            std::cout << byte_msg.value << "\n";
+            ByteMsg byte_msg = orchestrator.encodeCommand(command);
             // TODO: enviar comando al server
         }
     }

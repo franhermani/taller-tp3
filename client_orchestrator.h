@@ -21,8 +21,8 @@ public:
     // Determina si un comando recibido por stdin es valido o no
     const bool isValidCommand(const std::string command) const;
 
-    // Aplica el protocolo al mensaje recibido
-    ByteMsg applyProtocol(const std::string command);
+    // Codifica el comando recibido segun el protocolo
+    ByteMsg encodeCommand(const std::string command);
 };
 
 #endif // CLIENT_ORCHESTRATOR_H
