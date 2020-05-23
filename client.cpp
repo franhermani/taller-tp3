@@ -69,9 +69,10 @@ void Client::receiveMessage() {
     char buffer_value[BUF_MAX_SIZE];
 
     socket.receiveBytes(buffer_length, FIRST_SIZE);
-    std::cout << "Recibido FIRST_SIZE OK del server\n";
+    std::cout << "Recibo " << FIRST_SIZE << " bytes del server\n";
 
     uint32_t length = protocol.decodeMessageLength(buffer_length);
+    std::cout << "Voy a recibir " << length << " bytes del server\n";
     socket.receiveBytes(buffer_value, (size_t) length);
     std::cout << "Recibido el mensaje OK del server\n";
 

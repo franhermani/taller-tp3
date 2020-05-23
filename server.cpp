@@ -74,8 +74,8 @@ void Server::interactWithClients() {
         socket_client.receiveBytes(buffer2, length);
     }
     ByteMsg byte_msg = protocol.encodeMessage(buffer1);
-    socket_client.sendBytes(byte_msg.value, byte_msg.pos);
-    std::cout << "Envio OK al cliente\n";
+    socket_client.sendBytes(byte_msg.value, byte_msg.pos + 1);
+    std::cout << "Envio " << byte_msg.pos << " bytes al cliente\n";
 }
 
 void Server::printGamesPlayedStats() {

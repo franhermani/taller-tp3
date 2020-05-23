@@ -21,6 +21,7 @@ ByteMsg ClientProtocol::encodeMessage(const char *message) {
         byteMsg.value[++byteMsg.pos] = number_network & 0xFF;
         byteMsg.value[++byteMsg.pos] = (number_network >> 8);
     }
+    // TODO: esto creo que no va
     byteMsg.value[++byteMsg.pos] = '\0';
 
     return byteMsg;
