@@ -9,7 +9,7 @@ class ThreadClient : public Thread {
 
 public:
     // Constructor
-    explicit ThreadClient(const int sd);
+    explicit ThreadClient(Socket socket);
 
     // Constructor y asignacion por copia deshabilitados
     ThreadClient(const ThreadClient&) = delete;
