@@ -27,12 +27,12 @@ public:
     // TODO: ...
     virtual void run() override;
 
+    // Setea la variable booleana 'keep_talking' en false
+    virtual void stop() override;
+
     // Devuelve true si el thread no esta corriendo o
     // false en caso contrario
     virtual const bool isDead() override;
-
-    // Setea la variable booleana 'keep_talking' en false
-    virtual void stop() override;
 };
 
 #endif // THREAD_CLIENT_H
