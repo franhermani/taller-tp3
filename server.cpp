@@ -5,7 +5,7 @@
 #include <exception>
 #include "server.h"
 #include "server_defines.h"
-#include "common_file.h"
+#include "server_file.h"
 #include "common_socket.h"
 
 #define OK 0
@@ -19,12 +19,11 @@ int main(int argc, char *argv[]) {
         std::cerr << "Error: argumentos inválidos\n";
         return ERROR;
     }
-//    const char *host = 0, *port = argv[1];
-    const char *path = argv[2];
+    const char *host = 0, *port = argv[1], *path = argv[2];
 
     try {
         File file(path);
-        Server server(file);
+        Server server(file, host, port);
         server.parseNumbersFile();
 
 //        std::string command;
@@ -46,8 +45,14 @@ int main(int argc, char *argv[]) {
     return OK;
 }
 
-Server::Server(File& file) : numbers_file(file),
-num_winners(0), num_losers(0) {}
+Server::Server(File& file, const char *host, const char *port) :
+numbers_file(file), num_winners(0), num_losers(0) {
+    acceptor = new ThreadAcceptor(host, port);
+}
+
+Server::~Server() {
+    delete acceptor;
+}
 
 void Server::parseNumbersFile() {
     std::string line;

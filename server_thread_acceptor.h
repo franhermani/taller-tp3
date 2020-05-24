@@ -8,6 +8,9 @@ class ThreadAcceptor : public Thread {
     Socket socket;
 
 public:
+    // Constructor
+    ThreadAcceptor(const char *host, const char *port);
+
     // Constructor y asignacion por copia deshabilitados
     ThreadAcceptor(const ThreadAcceptor&) = delete;
     ThreadAcceptor& operator=(const ThreadAcceptor&) = delete;

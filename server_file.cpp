@@ -2,7 +2,7 @@
 #include <string>
 #include <exception>
 #include <iostream>
-#include "common_file.h"
+#include "server_file.h"
 
 File::File(const char *path) {
     ifs.open(path, std::ifstream::in);
