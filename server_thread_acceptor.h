@@ -6,12 +6,17 @@
 #include "server_thread.h"
 #include "common_socket.h"
 #include "server_thread_client.h"
+#include "server_number_guesser.h"
 
 class ThreadAcceptor : public Thread {
     Socket socket;
+    std::vector<NumberGuesser>& numbers;
     std::vector<ThreadClient*> clients;
     std::atomic<bool> keep_talking;
     std::atomic<bool> is_running;
+
+    // Crea el thread del cliente
+    void createThreadClient();
 
     // Recorre el vector de clientes y limpia aquellos que ya finalizaron
     void cleanDeadClients();
@@ -22,7 +27,8 @@ class ThreadAcceptor : public Thread {
 
 public:
     // Constructor
-    ThreadAcceptor(const char *host, const char *port);
+    ThreadAcceptor(const char *host, const char *port,
+            std::vector<NumberGuesser>& numbers);
 
     // Constructor y asignacion por copia deshabilitados
     ThreadAcceptor(const ThreadAcceptor&) = delete;

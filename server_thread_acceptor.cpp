@@ -5,15 +5,15 @@
 #include "server_thread_client.h"
 #include "common_socket_error.h"
 
-ThreadAcceptor::ThreadAcceptor(const char *host, const char *port) :
-socket(host, port), keep_talking(true), is_running(true) {}
+ThreadAcceptor::ThreadAcceptor(const char *host, const char *port,
+        std::vector<NumberGuesser>& numbers) : socket(host, port),
+        numbers(numbers), keep_talking(true), is_running(true) {}
 
 void ThreadAcceptor::run() {
     while (keep_talking) {
         try {
             socket.listenToClients();
-            Socket socket_client = socket.acceptClients();
-            clients.push_back(new ThreadClient(std::move(socket_client)));
+            createThreadClient();
             clients.back()->start();
             cleanDeadClients();
         } catch(SocketError) {
@@ -31,6 +31,13 @@ void ThreadAcceptor::stop() {
 
 const bool ThreadAcceptor::isDead() {
     return (! is_running);
+}
+
+void ThreadAcceptor::createThreadClient() {
+    Socket socket_client = socket.acceptClients();
+    int pos = clients.size() % numbers.size();
+    clients.push_back(new ThreadClient(std::move(socket_client),
+            numbers[pos]));
 }
 
 void ThreadAcceptor::cleanDeadClients() {

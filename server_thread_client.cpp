@@ -5,7 +5,8 @@
 #define BYTE_SIZE 1
 #define NUMBER_SIZE 2
 
-ThreadClient::ThreadClient(Socket socket) : socket(std::move(socket)),
+ThreadClient::ThreadClient(Socket socket, NumberGuesser& number_guesser) :
+socket(std::move(socket)), numberGuesser(number_guesser),
 keep_talking(true), is_running(true) {}
 
 void ThreadClient::run() {

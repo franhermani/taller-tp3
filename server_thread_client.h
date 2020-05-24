@@ -5,16 +5,18 @@
 #include "server_thread.h"
 #include "common_socket.h"
 #include "server_protocol.h"
+#include "server_number_guesser.h"
 
 class ThreadClient : public Thread {
     Socket socket;
     ServerProtocol protocol;
+    NumberGuesser& numberGuesser;
     std::atomic<bool> keep_talking;
     std::atomic<bool> is_running;
 
 public:
     // Constructor
-    explicit ThreadClient(Socket socket);
+    ThreadClient(Socket socket, NumberGuesser& number_guesser);
 
     // Constructor y asignacion por copia deshabilitados
     ThreadClient(const ThreadClient&) = delete;

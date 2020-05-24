@@ -45,7 +45,7 @@ int main(int argc, char *argv[]) {
 
 Server::Server(File& file, const char *host, const char *port) :
 numbers_file(file), num_winners(0), num_losers(0) {
-    threadAcceptor = new ThreadAcceptor(host, port);
+    threadAcceptor = new ThreadAcceptor(host, port, numbers);
 }
 
 Server::~Server() {
