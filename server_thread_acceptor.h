@@ -18,7 +18,8 @@ public:
     ThreadAcceptor(const ThreadAcceptor&) = delete;
     ThreadAcceptor& operator=(const ThreadAcceptor&) = delete;
 
-    // Acepta clientes, crea sus threads y los almacena en el vector 'clients'
+    // Acepta clientes, crea sus threads, los almacena en el vector 'clients'
+    // y los pone a correr
     virtual void run() override;
 };
 
