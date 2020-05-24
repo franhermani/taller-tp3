@@ -1,10 +1,16 @@
 #include <utility>
 #include "server_thread_client.h"
 
-ThreadClient::ThreadClient(Socket socket) : socket(std::move(socket)) {}
+ThreadClient::ThreadClient(Socket socket) : socket(std::move(socket)),
+keep_talking(true), is_running(true) {}
 
 void ThreadClient::run() {
-    // TODO: ...
+    /*
+    while (keep_talking) {
+        // TODO: ...
+    }
+    is_running = false;
+    */
 }
 
 /*

@@ -1,11 +1,14 @@
 #ifndef THREAD_CLIENT_H
 #define THREAD_CLIENT_H
 
+#include <atomic>
 #include "server_thread.h"
 #include "common_socket.h"
 
 class ThreadClient : public Thread {
     Socket socket;
+    std::atomic<bool> keep_talking;
+    std::atomic<bool> is_running;
 
 public:
     // Constructor
