@@ -34,8 +34,7 @@ const bool ThreadAcceptor::isDead() {
 }
 
 void ThreadAcceptor::cleanDeadClients() {
-    // TODO: descomentar esto cuando ande todo
-    // ojo que el erase creo que esta mal
+    // TODO: descomentar esto cuando ande todo (y corregir el erase)
     /*
     size_t i;
     for (i = 0; i < clients.size(); i ++) {

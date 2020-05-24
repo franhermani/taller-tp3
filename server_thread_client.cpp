@@ -1,3 +1,4 @@
+#include <string>
 #include <utility>
 #include "server_thread_client.h"
 

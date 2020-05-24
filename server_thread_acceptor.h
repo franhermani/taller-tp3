@@ -13,6 +13,13 @@ class ThreadAcceptor : public Thread {
     std::atomic<bool> keep_talking;
     std::atomic<bool> is_running;
 
+    // Recorre el vector de clientes y limpia aquellos que ya finalizaron
+    void cleanDeadClients();
+
+    // Recorre el vector de clientes y espera a que finalicen
+    // Libera la memoria reservada
+    void joinClients();
+
 public:
     // Constructor
     ThreadAcceptor(const char *host, const char *port);
@@ -31,13 +38,6 @@ public:
     // Devuelve true si el thread no esta corriendo o
     // false en caso contrario
     virtual const bool isDead() override;
-
-    // Recorre el vector de clientes y limpia aquellos que ya finalizaron
-    void cleanDeadClients();
-
-    // Recorre el vector de clientes y espera a que finalicen
-    // Libera la memoria reservada
-    void joinClients();
 };
 
 #endif // THREAD_ACCEPTOR_H
