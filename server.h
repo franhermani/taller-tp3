@@ -14,7 +14,6 @@ class Server {
     ServerProtocol protocol;
     ThreadInput *threadInput;
     ThreadAcceptor *threadAcceptor;
-    std::vector<ThreadClient*> clients;
     std::vector<NumberGuesser> numbers;
     int num_winners;
     int num_losers;

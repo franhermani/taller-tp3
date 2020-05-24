@@ -8,12 +8,11 @@
 
 class ThreadAcceptor : public Thread {
     Socket socket;
-    std::vector<ThreadClient*>& clients;
+    std::vector<ThreadClient*> clients;
 
 public:
     // Constructor
-    ThreadAcceptor(const char *host, const char *port,
-            std::vector<ThreadClient*>& clients);
+    ThreadAcceptor(const char *host, const char *port);
 
     // Constructor y asignacion por copia deshabilitados
     ThreadAcceptor(const ThreadAcceptor&) = delete;
