@@ -16,8 +16,12 @@ public:
     // Ejecuta el thread (redefinido por sus clases derivadas)
     virtual void run() = 0;
 
-    // Frena la ejecucion del thread
+    // Frena la ejecucion del thread (redefinido por sus clases derivadas)
     virtual void stop() = 0;
+
+    // Indica el el thread esta corriendo o no
+    // (redefinido por sus clases derivadas)
+    virtual const bool isDead() = 0;
 
     // Espera a que finalice el thread
     void join();

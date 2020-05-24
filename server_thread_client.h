@@ -27,6 +27,10 @@ public:
     // TODO: ...
     virtual void run() override;
 
+    // Devuelve true si el thread no esta corriendo o
+    // false en caso contrario
+    virtual const bool isDead() override;
+
     // Setea la variable booleana 'keep_talking' en false
     virtual void stop() override;
 };

@@ -15,6 +15,10 @@ void ThreadClient::stop() {
     keep_talking = false;
 }
 
+const bool ThreadClient::isDead() {
+    return (! is_running);
+}
+
 /*
 void Server::interactWithClients() {
     char buffer_byte[BYTE_SIZE];
