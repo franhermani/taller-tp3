@@ -6,7 +6,6 @@
 #include "server_number_guesser.h"
 #include "server_protocol.h"
 #include "server_thread_acceptor.h"
-#include "server_thread_client.h"
 
 class Server {
     File& numbers_file;

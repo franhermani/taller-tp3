@@ -1,6 +1,9 @@
 #include <utility>
 #include "server_thread_client.h"
 
+#define BYTE_SIZE 1
+#define NUMBER_SIZE 2
+
 ThreadClient::ThreadClient(Socket socket) : socket(std::move(socket)),
 keep_talking(true), is_running(true) {}
 
