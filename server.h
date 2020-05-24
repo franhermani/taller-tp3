@@ -5,15 +5,17 @@
 #include "server_file.h"
 #include "server_number_guesser.h"
 #include "server_protocol.h"
+#include "server_thread_input.h"
 #include "server_thread_acceptor.h"
 #include "server_thread_client.h"
 
 class Server {
     File& numbers_file;
     ServerProtocol protocol;
-    std::vector<NumberGuesser> numbers;
+    ThreadInput *threadInput;
+    ThreadAcceptor *threadAcceptor;
     std::vector<ThreadClient*> clients;
-    ThreadAcceptor *acceptor;
+    std::vector<NumberGuesser> numbers;
     int num_winners;
     int num_losers;
 
@@ -31,6 +33,12 @@ public:
     // Lee el archivo de numeros, crea un NumberGuesser para cada uno
     // y lo almacena en el vector 'numbers'
     void parseNumbersFile();
+
+    // Inicializa el threadInput
+    void startThreadInput();
+
+    // Inicializa el threadAcceptor
+    void startThreadAcceptor();
 
     // Interactua con los clientes (envia y recibe mensajes)
     void interactWithClients();

@@ -25,15 +25,9 @@ int main(int argc, char *argv[]) {
         File file(path);
         Server server(file, host, port);
         server.parseNumbersFile();
-
-//        std::string command;
-//        while (getline(std::cin, command)) {
-//            if (command == EXIT_CHAR) {
-                // TODO: esperar a que terminen todos los clientes (join)
-//                break;
-//            }
-            server.interactWithClients();
-//        }
+        server.startThreadInput();
+        server.startThreadAcceptor();
+        server.interactWithClients();
         server.printGamesPlayedStats();
     } catch (const std::exception &e) {
         std::cerr << e.what();
@@ -47,11 +41,16 @@ int main(int argc, char *argv[]) {
 
 Server::Server(File& file, const char *host, const char *port) :
 numbers_file(file), num_winners(0), num_losers(0) {
-    acceptor = new ThreadAcceptor(host, port);
+    threadInput = new ThreadInput();
+    threadAcceptor = new ThreadAcceptor(host, port);
 }
 
 Server::~Server() {
-    delete acceptor;
+    threadInput->join();
+    delete threadInput;
+
+    threadAcceptor->join();
+    delete threadAcceptor;
 }
 
 void Server::parseNumbersFile() {
@@ -63,6 +62,15 @@ void Server::parseNumbersFile() {
     numbers_file.closeFD();
 }
 
+void Server::startThreadInput() {
+    threadInput->start();
+}
+
+void Server::startThreadAcceptor() {
+    threadAcceptor->start();
+}
+
+// TODO: esta funcion va en el acceptor (creo)
 void Server::interactWithClients() {
     char buffer_byte[BYTE_SIZE];
     Socket socket_acceptor(0, "8080");
