@@ -30,11 +30,11 @@ int main(int argc, char *argv[]) {
         std::string command;
         while (getline(std::cin, command)) {
             if (command == EXIT_CHAR) {
-                // threadAcceptor.stop()
+                server.stopThreadAcceptor();
                 break;
             }
         }
-        server.finishThreadAcceptor();
+        server.joinThreadAcceptor();
         server.printGamesPlayedStats();
     } catch (const std::exception &e) {
         std::cerr << e.what();
@@ -68,7 +68,11 @@ void Server::startThreadAcceptor() {
     threadAcceptor->start();
 }
 
-void Server::finishThreadAcceptor() {
+void Server::stopThreadAcceptor() {
+    threadAcceptor->stop();
+}
+
+void Server::joinThreadAcceptor() {
     threadAcceptor->join();
 }
 

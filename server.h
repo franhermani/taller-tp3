@@ -34,8 +34,11 @@ public:
     // Inicializa el threadAcceptor
     void startThreadAcceptor();
 
-    // Finaliza el threadAcceptor
-    void finishThreadAcceptor();
+    // Finaliza la ejecucion del threadAcceptor
+    void stopThreadAcceptor();
+
+    // Espera a que finalice el threadAcceptor
+    void joinThreadAcceptor();
 
     // Imprime por pantalla las estadisticas de las partidas jugadas
     void printGamesPlayedStats();

@@ -5,12 +5,14 @@ ThreadClient::ThreadClient(Socket socket) : socket(std::move(socket)),
 keep_talking(true), is_running(true) {}
 
 void ThreadClient::run() {
-    /*
     while (keep_talking) {
         // TODO: ...
     }
     is_running = false;
-    */
+}
+
+void ThreadClient::stop() {
+    keep_talking = false;
 }
 
 /*

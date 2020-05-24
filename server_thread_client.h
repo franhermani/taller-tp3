@@ -24,7 +24,11 @@ public:
     // Recibe el numero enviado por el cliente
 //    void processClientNumber(const int number);
 
+    // TODO: ...
     virtual void run() override;
+
+    // Setea la variable booleana 'keep_talking' en false
+    virtual void stop() override;
 };
 
 #endif // THREAD_CLIENT_H

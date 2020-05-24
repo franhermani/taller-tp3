@@ -16,7 +16,10 @@ public:
     // Ejecuta el thread (redefinido por sus clases derivadas)
     virtual void run() = 0;
 
-    // Finaliza el thread
+    // Frena la ejecucion del thread
+    virtual void stop() = 0;
+
+    // Espera a que finalice el thread
     void join();
 
     // Destructor
