@@ -54,8 +54,12 @@ public:
     Socket& operator=(Socket&& other);
 
     // Destructor
-    // Cierra el socket descriptor (en caso de que no se haya cerrado antes)
+    // Llama a finish
     ~Socket();
+
+    // Cierra el canal de lectura-escritura y el socket descriptor
+    // (en caso de que no se hayan cerrado antes)
+    void finish();
 
     // [Solo servidor]
     // Escucha conexiones entrantes de clientes (hasta MAX_LISTEN_QUEUE_LEN)

@@ -31,14 +31,17 @@ Socket& Socket::operator=(Socket &&other) {
 }
 
 Socket::~Socket() {
+    finish();
+}
+
+void Socket::finish() {
     if (sd == -1) return;
     shutdownChannel(SHUT_RDWR);
     closeSocketDescriptor();
 }
 
 void Socket::shutdownChannel(const int channel) {
-    if (shutdown(sd, channel) == -1)
-        throw SocketError("Error al cerrar el canal %d del socket\n", channel);
+    shutdown(sd, channel);
 }
 
 void Socket::closeSocketDescriptor() {

@@ -19,6 +19,7 @@ void ThreadAcceptor::run() {
 
 void ThreadAcceptor::stop() {
     keep_talking = false;
+    socket.finish();
 }
 
 const bool ThreadAcceptor::isDead() {
