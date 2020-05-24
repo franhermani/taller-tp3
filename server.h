@@ -4,12 +4,10 @@
 #include <vector>
 #include "server_file.h"
 #include "server_number_guesser.h"
-#include "server_protocol.h"
 #include "server_thread_acceptor.h"
 
 class Server {
     File& numbers_file;
-    ServerProtocol protocol;
     ThreadAcceptor *threadAcceptor;
     std::vector<NumberGuesser> numbers;
     int num_winners;

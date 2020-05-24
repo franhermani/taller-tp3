@@ -4,9 +4,11 @@
 #include <atomic>
 #include "server_thread.h"
 #include "common_socket.h"
+#include "server_protocol.h"
 
 class ThreadClient : public Thread {
     Socket socket;
+    ServerProtocol protocol;
     std::atomic<bool> keep_talking;
     std::atomic<bool> is_running;
 

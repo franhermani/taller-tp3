@@ -1,3 +1,4 @@
+#include <iostream>
 #include <vector>
 #include <utility>
 #include "server_thread_acceptor.h"
@@ -6,14 +7,6 @@
 
 ThreadAcceptor::ThreadAcceptor(const char *host, const char *port) :
 socket(host, port), keep_talking(true), is_running(true) {}
-
-ThreadAcceptor::~ThreadAcceptor() {
-    size_t i;
-    for (i = 0; i < clients.size(); i ++) {
-        clients[i]->join();
-        delete clients[i];
-    }
-}
 
 void ThreadAcceptor::run() {
     while (keep_talking) {
@@ -28,6 +21,7 @@ void ThreadAcceptor::run() {
         }
     }
     is_running = false;
+    joinClients();
 }
 
 void ThreadAcceptor::stop() {
@@ -52,4 +46,12 @@ void ThreadAcceptor::cleanDeadClients() {
         }
     }
     */
+}
+
+void ThreadAcceptor::joinClients() {
+    size_t i;
+    for (i = 0; i < clients.size(); i ++) {
+        clients[i]->join();
+        delete clients[i];
+    }
 }

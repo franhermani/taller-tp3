@@ -21,10 +21,6 @@ public:
     ThreadAcceptor(const ThreadAcceptor&) = delete;
     ThreadAcceptor& operator=(const ThreadAcceptor&) = delete;
 
-    // Destructor
-    // Libera la memoria reservada para los threads de los clientes
-    ~ThreadAcceptor();
-
     // Acepta clientes, crea sus threads, los almacena en el vector 'clients'
     // y los pone a correr
     virtual void run() override;
@@ -38,6 +34,10 @@ public:
 
     // Recorre el vector de clientes y limpia aquellos que ya finalizaron
     void cleanDeadClients();
+
+    // Recorre el vector de clientes y espera a que finalicen
+    // Libera la memoria reservada
+    void joinClients();
 };
 
 #endif // THREAD_ACCEPTOR_H
