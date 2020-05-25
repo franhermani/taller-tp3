@@ -42,6 +42,7 @@ void ThreadAcceptor::createThreadClient() {
 }
 
 void ThreadAcceptor::cleanDeadClients() {
+    /*
     size_t i;
     for (i = 0; i < clients.size(); i ++) {
         if (clients[i]->isDead()) {
@@ -50,6 +51,7 @@ void ThreadAcceptor::cleanDeadClients() {
             clients.erase(clients.begin() + i);
         }
     }
+     */
 }
 
 void ThreadAcceptor::joinClients() {
