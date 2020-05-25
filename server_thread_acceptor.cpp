@@ -42,6 +42,7 @@ void ThreadAcceptor::createThreadClient() {
 }
 
 void ThreadAcceptor::cleanDeadClients() {
+    /*
     std::vector<ThreadClient*>::iterator iter = clients.begin();
     while (iter != clients.end()) {
         ThreadClient* client = *iter;
@@ -53,6 +54,7 @@ void ThreadAcceptor::cleanDeadClients() {
             ++iter;
         }
     }
+     */
 }
 
 void ThreadAcceptor::joinClients() {
