@@ -1,5 +1,6 @@
 #include <iostream>
 #include <string.h>
+#include <math.h>
 #include "client.h"
 #include "common_defines.h"
 #include "common_socket_error.h"
@@ -46,7 +47,7 @@ const bool Client::isValidNumber(const std::string& command)
 const {
     try {
         int number = std::stoi(command);
-        if (number < MIN_NUM || number > MAX_NUM) return false;
+        if (number >= pow(2, 16)) return false;
     } catch(...) {
         return false;
     }
