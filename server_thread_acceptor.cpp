@@ -1,4 +1,3 @@
-#include <iostream>
 #include <vector>
 #include <utility>
 #include "server_thread_acceptor.h"
@@ -16,7 +15,7 @@ void ThreadAcceptor::run() {
             socket.listenToClients();
             createThreadClient();
             clients.back()->start();
-            cleanDeadClients();
+//            cleanDeadClients();
         } catch(SocketError) {
             break;
         }
