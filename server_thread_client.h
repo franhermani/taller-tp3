@@ -23,10 +23,10 @@ public:
     ThreadClient& operator=(const ThreadClient&) = delete;
 
     // Interactua con los clientes (envia y recibe mensajes)
-//    void interactWithClients();
+    void interactWithClient();
 
     // Recibe el numero enviado por el cliente
-//    void processClientNumber(const int number);
+    void processClientNumber(const int number);
 
     // TODO: ...
     virtual void run() override;

@@ -18,7 +18,12 @@ ByteMsg ServerProtocol::encodeMessage(const char *message) {
                          " secreto"},
              {SURRENDER_CHAR, "Perdiste"}};
 
-    const char *response = responses[message[0]];
+    const char *response;
+    if (message[0] == HELP_CHAR || message[0] == SURRENDER_CHAR) {
+        response = responses[message[0]];
+    } else {
+        response = message;
+    }
     uint32_t length_network = htonl(strlen(response));
 
     byteMsg.value[byteMsg.pos] = (length_network & 0x000000FF);

@@ -5,7 +5,7 @@
 
 struct InvalidNumberError : public std::exception {
     const char * what() const throw() {
-        return "Número inválido. Debe ser de 3 cifras no repetidas\n";
+        return "Número inválido. Debe ser de 3 cifras no repetidas";
     }
 };
 
