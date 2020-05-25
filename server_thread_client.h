@@ -13,6 +13,8 @@ class ThreadClient : public Thread {
     NumberGuesser& numberGuesser;
     std::atomic<bool> keep_talking;
     std::atomic<bool> is_running;
+    std::atomic<bool> is_finished;
+    int num_tries;
 
 public:
     // Constructor

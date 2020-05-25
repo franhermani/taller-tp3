@@ -1,4 +1,6 @@
+#include <iostream>
 #include <string>
+#include <string.h>
 #include <map>
 #include <utility>
 #include "server_thread_client.h"
@@ -10,7 +12,7 @@
 
 ThreadClient::ThreadClient(Socket socket, NumberGuesser& number_guesser) :
 socket(std::move(socket)), numberGuesser(number_guesser),
-keep_talking(true), is_running(true) {}
+keep_talking(true), is_running(true), is_finished(false), num_tries(0) {}
 
 void ThreadClient::run() {
     while (keep_talking) interactWithClient();
@@ -38,7 +40,10 @@ void ThreadClient::interactWithClient() {
     } else {
         ByteMsg byte_msg = protocol.encodeMessage(buffer_byte);
         socket.sendBytes(byte_msg.value, byte_msg.pos + 1);
+
+        if (buffer_byte[0] == SURRENDER_CHAR) is_finished = true;
     }
+    if (is_finished) stop();
 }
 
 void ThreadClient::processClientNumber(const int number) {
@@ -46,8 +51,14 @@ void ThreadClient::processClientNumber(const int number) {
     try {
         std::map<std::string, int> answer = numberGuesser.countDigits(number);
 
-        if (answer[GOOD] > 0) message += std::to_string(answer[GOOD]) + GOOD;
-
+        if (answer[GOOD] > 0) {
+            if (answer[GOOD] == NUM_DIGITS) {
+                message += WIN_MSG;
+                is_finished = true;
+            } else {
+                message += std::to_string(answer[GOOD]) + GOOD;
+            }
+        }
         if (answer[REGULAR] > 0) {
             if (message.size() > 0) message += ", ";
             message += std::to_string(answer[REGULAR]) + REGULAR;
@@ -56,6 +67,13 @@ void ThreadClient::processClientNumber(const int number) {
     } catch(InvalidNumberError &e) {
         message = e.what();
     }
+    num_tries += 1;
+    if (num_tries == ATTEMPTS) {
+        message = LOSE_MSG;
+        is_finished = true;
+    }
     ByteMsg byte_msg = protocol.encodeMessage(message.c_str());
     socket.sendBytes(byte_msg.value, byte_msg.pos + 1);
+
+    if (is_finished) stop();
 }

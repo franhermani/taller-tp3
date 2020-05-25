@@ -16,7 +16,7 @@ ByteMsg ServerProtocol::encodeMessage(const char *message) {
                          " automáticamente\n\tXXX: Número de 3 cifras a ser"
                          " enviado al servidor para adivinar el número"
                          " secreto"},
-             {SURRENDER_CHAR, "Perdiste"}};
+             {SURRENDER_CHAR, LOSE_MSG}};
 
     const char *response;
     if (message[0] == HELP_CHAR || message[0] == SURRENDER_CHAR) {
