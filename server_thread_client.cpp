@@ -6,6 +6,7 @@
 #include "server_thread_client.h"
 #include "server_defines.h"
 #include "server_invalid_number_error.h"
+#include "common_socket_error.h"
 
 #define BYTE_SIZE 1
 #define NUMBER_SIZE 2
@@ -17,7 +18,13 @@ ThreadClient::ThreadClient(Socket socket, NumberGuesser& number_guesser,
         num_tries(0) {}
 
 void ThreadClient::run() {
-    while (keep_talking) interactWithClient();
+    while (keep_talking) {
+        try {
+            interactWithClient();
+        } catch(SocketError) {
+            break;
+        }
+    }
     is_running = false;
 }
 

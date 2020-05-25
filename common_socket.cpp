@@ -1,4 +1,3 @@
-#include <iostream>
 #include <string.h>
 #include <unistd.h>
 #include <utility>
@@ -133,17 +132,20 @@ const int Socket::sendBytes(const char *buffer, const size_t length) {
 const int Socket::receiveBytes(char *buffer, const size_t length) {
     int bytes = 0;
     size_t tot_bytes = 0;
-    bool socket_error = false;
+    bool socket_closed = false, socket_error = false;
 
-    while ((tot_bytes < length) && (! socket_error)) {
+    while ((tot_bytes < length) && (!socket_closed) && (! socket_error)) {
         bytes = recv(sd, &buffer[tot_bytes], length - tot_bytes, 0);
         if (bytes == -1) {
             socket_error = true;
+        } else if (bytes == 0) {
+            socket_closed = true;
         } else {
             tot_bytes += bytes;
         }
     }
-    if (socket_error) throw SocketError("Error al recibir el mensaje\n");
+    if (socket_closed || socket_error)
+        throw SocketError("Error al recibir el mensaje\n");
 
     return tot_bytes;
 }
