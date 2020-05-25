@@ -9,6 +9,15 @@ class Client {
     ClientProtocol protocol;
     Socket socket;
 
+    // Determina si un numero recibido por stdin es valido o no
+    const bool isValidNumber(const std::string& command) const;
+
+    // Envia un mensaje al servidor
+    void sendMessage(ByteMsg& byte_msg);
+
+    // Recibe un mensaje del servidor
+    const std::string receiveMessage();
+
 public:
     // Constructor
     // Asocia al cliente al 'host' y 'port' recibidos por consola
@@ -21,19 +30,10 @@ public:
     // Determina si un comando recibido por stdin es valido o no
     const bool isValidCommand(const std::string& command) const;
 
-    // Determina si un numero recibido por stdin es valido o no
-    const bool isValidNumber(const std::string& command) const;
-
     // Interactua con el servidor (envia y recibe mensajes)
     // Devuelve false si termina el juego (esto es, el server envia
     // 'Ganaste' o 'Perdiste') o true en cualquier otro caso
     const bool interactWithServer(const std::string& command);
-
-    // Envia un mensaje al servidor
-    void sendMessage(ByteMsg& byte_msg);
-
-    // Recibe un mensaje del servidor
-    const std::string receiveMessage();
 };
 
 #endif // CLIENT_H

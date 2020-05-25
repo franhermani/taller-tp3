@@ -7,8 +7,8 @@
 
 #define RET 0
 #define NUM_PARAMS 3
-#define BUF_MAX_SIZE 256
 #define FIRST_SIZE 4
+#define BUF_MAX_SIZE 256
 
 int main(int argc, char *argv[]) {
     if (argc != NUM_PARAMS) {
@@ -16,7 +16,6 @@ int main(int argc, char *argv[]) {
         return RET;
     }
     const char *host = argv[1], *port = argv[2];
-
     try {
         Client client(host, port);
         std::string command;
@@ -38,16 +37,13 @@ int main(int argc, char *argv[]) {
 
 Client::Client(const char *host, const char *port) : socket(host, port) {}
 
-const bool Client::isValidCommand(const std::string& command)
-const {
+const bool Client::isValidCommand(const std::string& command) const {
     return (command == HELP || command == SURRENDER || isValidNumber(command));
 }
 
-const bool Client::isValidNumber(const std::string& command)
-const {
+const bool Client::isValidNumber(const std::string& command) const {
     try {
-        int number = std::stoi(command);
-        if (number >= pow(2, 16)) return false;
+        if (std::stoi(command) >= pow(2, 16)) return false;
     } catch(...) {
         return false;
     }
