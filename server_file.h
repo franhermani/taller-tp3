@@ -24,9 +24,8 @@ public:
     // Cierra el archivo
     void closeFD();
 
-    // Lee una linea del archivo y la almacena en 'line'
-    // Devuelve true siempre y cuando la linea leida no tenga longitud nula
-    bool readLine(std::string& line);
+    // Devuelve una referencia al archivo
+    std::ifstream& getFile();
 };
 
 #endif // FILE_H

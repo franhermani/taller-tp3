@@ -54,7 +54,7 @@ Server::~Server() {
 
 void Server::parseNumbersFile() {
     std::string line;
-    while (numbers_file.readLine(line)) {
+    while (getline(numbers_file.getFile(), line)) {
         NumberGuesser numberGuesser(std::stoi(line));
         numbers.push_back(std::move(numberGuesser));
     }

@@ -19,7 +19,6 @@ void File::closeFD() {
     is_open = false;
 }
 
-bool File::readLine(std::string& line) {
-    getline(ifs, line);
-    return (line.size() != 0);
+std::ifstream& File::getFile() {
+    return ifs;
 }
