@@ -17,7 +17,7 @@ ByteMsg ClientProtocol::encodeMessage(const char *message) {
     } else {
         byteMsg.value[byteMsg.pos] = NUMBER_CHAR;
         uint16_t number_network = htons(atoi(message));
-        byteMsg.value[++byteMsg.pos] = number_network & 0xFF;
+        byteMsg.value[++byteMsg.pos] = (number_network & 0xFF);
         byteMsg.value[++byteMsg.pos] = (number_network >> 8);
     }
     return byteMsg;
