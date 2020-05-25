@@ -16,6 +16,7 @@ class ThreadAcceptor : public Thread {
     std::vector<ThreadClient*> clients;
     std::atomic<bool> keep_talking;
     std::atomic<bool> is_running;
+    int actual_number_pos;
 
     // Crea el thread del cliente
     void createThreadClient();
@@ -26,6 +27,9 @@ class ThreadAcceptor : public Thread {
     // Recorre el vector de clientes y espera a que finalicen
     // Libera la memoria reservada
     void joinClients();
+
+    // Actualiza la posicion en el vector 'numbers' del numero actual
+    void updateNumberPos();
 
 public:
     // Constructor

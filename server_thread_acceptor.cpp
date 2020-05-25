@@ -7,7 +7,7 @@
 ThreadAcceptor::ThreadAcceptor(const char *host, const char *port,
         std::vector<NumberGuesser>& numbers, GameStats& game_stats) :
         socket(host, port), numbers(numbers), gameStats(game_stats),
-        keep_talking(true), is_running(true) {}
+        keep_talking(true), is_running(true), actual_number_pos(0) {}
 
 void ThreadAcceptor::run() {
     while (keep_talking) {
@@ -15,7 +15,8 @@ void ThreadAcceptor::run() {
             socket.listenToClients();
             createThreadClient();
             clients.back()->start();
-//            cleanDeadClients();
+            cleanDeadClients();
+            updateNumberPos();
         } catch(SocketError) {
             break;
         }
@@ -35,9 +36,8 @@ const bool ThreadAcceptor::isDead() {
 
 void ThreadAcceptor::createThreadClient() {
     Socket socket_client = socket.acceptClients();
-    int pos = clients.size() % numbers.size();
     clients.push_back(new ThreadClient(std::move(socket_client),
-            numbers[pos], gameStats));
+            numbers[actual_number_pos], gameStats));
 }
 
 void ThreadAcceptor::cleanDeadClients() {
@@ -59,5 +59,13 @@ void ThreadAcceptor::joinClients() {
     for (i = 0; i < clients.size(); i ++) {
         clients[i]->join();
         delete clients[i];
+    }
+}
+
+void ThreadAcceptor::updateNumberPos() {
+    if (actual_number_pos == (int) (numbers.size() - 1)) {
+        actual_number_pos = 0;
+    } else {
+        actual_number_pos ++;
     }
 }
