@@ -10,7 +10,7 @@
 #include "server_repeated_digits_error.h"
 #include "server_invalid_number_error.h"
 
-NumberGuesser::NumberGuesser(int number) : min_num(MIN_NUM), max_num(MAX_NUM) {
+NumberGuesser::NumberGuesser(int number) {
     if (isOutOfRange(number)) throw OutOfRangeError();
 
     secret_number = convertIntToVector(number);
@@ -23,7 +23,7 @@ NumberGuesser::NumberGuesser(NumberGuesser &&other) {
 }
 
 const bool NumberGuesser::isOutOfRange(const int& number) const {
-    return (number < min_num || number > max_num);
+    return (number < MIN_NUM || number > MAX_NUM);
 }
 
 const bool NumberGuesser::hasRepeatedDigits(const std::vector<int>& digits)

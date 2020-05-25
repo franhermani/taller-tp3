@@ -7,8 +7,6 @@
 
 class NumberGuesser {
     std::vector<int> secret_number;
-    int min_num;
-    int max_num;
 
     // Determina si 'number' se encuentra fuera del rango valido
     const bool isOutOfRange(const int& number) const;
