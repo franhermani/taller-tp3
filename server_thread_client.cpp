@@ -10,9 +10,11 @@
 #define BYTE_SIZE 1
 #define NUMBER_SIZE 2
 
-ThreadClient::ThreadClient(Socket socket, NumberGuesser& number_guesser) :
-socket(std::move(socket)), numberGuesser(number_guesser),
-keep_talking(true), is_running(true), is_finished(false), num_tries(0) {}
+ThreadClient::ThreadClient(Socket socket, NumberGuesser& number_guesser,
+        GameStats& game_stats) : socket(std::move(socket)),
+        numberGuesser(number_guesser), gameStats(game_stats),
+        keep_talking(true), is_running(true), is_finished(false),
+        num_tries(0) {}
 
 void ThreadClient::run() {
     while (keep_talking) interactWithClient();
@@ -41,7 +43,10 @@ void ThreadClient::interactWithClient() {
         ByteMsg byte_msg = protocol.encodeMessage(buffer_byte);
         socket.sendBytes(byte_msg.value, byte_msg.pos + 1);
 
-        if (buffer_byte[0] == SURRENDER_CHAR) is_finished = true;
+        if (buffer_byte[0] == SURRENDER_CHAR) {
+            gameStats.addLoser();
+            is_finished = true;
+        }
     }
     if (is_finished) stop();
 }
@@ -54,6 +59,7 @@ void ThreadClient::processClientNumber(const int number) {
         if (answer[GOOD] > 0) {
             if (answer[GOOD] == NUM_DIGITS) {
                 message += WIN_MSG;
+                gameStats.addWinner();
                 is_finished = true;
             } else {
                 message += std::to_string(answer[GOOD]) + GOOD;
@@ -70,6 +76,7 @@ void ThreadClient::processClientNumber(const int number) {
     num_tries += 1;
     if (num_tries == ATTEMPTS) {
         message = LOSE_MSG;
+        gameStats.addLoser();
         is_finished = true;
     }
     ByteMsg byte_msg = protocol.encodeMessage(message.c_str());

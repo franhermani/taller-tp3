@@ -7,10 +7,12 @@
 #include "common_socket.h"
 #include "server_thread_client.h"
 #include "server_number_guesser.h"
+#include "server_game_stats.h"
 
 class ThreadAcceptor : public Thread {
     Socket socket;
     std::vector<NumberGuesser>& numbers;
+    GameStats& gameStats;
     std::vector<ThreadClient*> clients;
     std::atomic<bool> keep_talking;
     std::atomic<bool> is_running;
@@ -28,7 +30,7 @@ class ThreadAcceptor : public Thread {
 public:
     // Constructor
     ThreadAcceptor(const char *host, const char *port,
-            std::vector<NumberGuesser>& numbers);
+            std::vector<NumberGuesser>& numbers, GameStats& game_stats);
 
     // Constructor y asignacion por copia deshabilitados
     ThreadAcceptor(const ThreadAcceptor&) = delete;

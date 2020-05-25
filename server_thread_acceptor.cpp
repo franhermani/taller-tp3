@@ -6,8 +6,9 @@
 #include "common_socket_error.h"
 
 ThreadAcceptor::ThreadAcceptor(const char *host, const char *port,
-        std::vector<NumberGuesser>& numbers) : socket(host, port),
-        numbers(numbers), keep_talking(true), is_running(true) {}
+        std::vector<NumberGuesser>& numbers, GameStats& game_stats) :
+        socket(host, port), numbers(numbers), gameStats(game_stats),
+        keep_talking(true), is_running(true) {}
 
 void ThreadAcceptor::run() {
     while (keep_talking) {
@@ -37,7 +38,7 @@ void ThreadAcceptor::createThreadClient() {
     Socket socket_client = socket.acceptClients();
     int pos = clients.size() % numbers.size();
     clients.push_back(new ThreadClient(std::move(socket_client),
-            numbers[pos]));
+            numbers[pos], gameStats));
 }
 
 void ThreadAcceptor::cleanDeadClients() {

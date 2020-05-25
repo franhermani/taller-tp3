@@ -44,8 +44,8 @@ int main(int argc, char *argv[]) {
 }
 
 Server::Server(File& file, const char *host, const char *port) :
-numbers_file(file), num_winners(0), num_losers(0) {
-    threadAcceptor = new ThreadAcceptor(host, port, numbers);
+numbers_file(file) {
+    threadAcceptor = new ThreadAcceptor(host, port, numbers, gameStats);
 }
 
 Server::~Server() {
@@ -74,6 +74,6 @@ void Server::joinThreadAcceptor() {
 }
 
 void Server::printGamesPlayedStats() {
-    std::cout << "Estadísticas:\n\tGanadores:  " << num_winners <<
-              "\n\tPerdedores: " << num_losers << "\n";
+    std::cout << "Estadísticas:\n\tGanadores:  " << gameStats.getWinners() <<
+              "\n\tPerdedores: " << gameStats.getLosers() << "\n";
 }

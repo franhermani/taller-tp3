@@ -5,13 +5,13 @@
 #include "server_file.h"
 #include "server_number_guesser.h"
 #include "server_thread_acceptor.h"
+#include "server_game_stats.h"
 
 class Server {
     File& numbers_file;
     ThreadAcceptor *threadAcceptor;
     std::vector<NumberGuesser> numbers;
-    int num_winners;
-    int num_losers;
+    GameStats gameStats;
 
 public:
     // Constructor
