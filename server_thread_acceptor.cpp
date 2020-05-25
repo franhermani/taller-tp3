@@ -42,16 +42,17 @@ void ThreadAcceptor::createThreadClient() {
 }
 
 void ThreadAcceptor::cleanDeadClients() {
-    /*
-    size_t i;
-    for (i = 0; i < clients.size(); i ++) {
-        if (clients[i]->isDead()) {
-            clients[i]->join();
-            delete clients[i];
-            clients.erase(clients.begin() + i);
+    std::vector<ThreadClient*>::iterator iter = clients.begin();
+    while (iter != clients.end()) {
+        ThreadClient* client = *iter;
+        if (client->isDead()) {
+            client->join();
+            delete client;
+            clients.erase(iter);
+        } else {
+            ++iter;
         }
     }
-     */
 }
 
 void ThreadAcceptor::joinClients() {
