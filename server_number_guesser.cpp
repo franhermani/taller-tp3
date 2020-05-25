@@ -45,7 +45,7 @@ const std::vector<int> NumberGuesser::convertIntToVector(int number) const {
     return std::move(digits);
 }
 
-const std::map<std::string, int> NumberGuesser::countDigits(const int number)
+const std::map<std::string, int> NumberGuesser::operator()(const int number)
 const {
     if (isOutOfRange(number)) throw InvalidNumberError();
 

@@ -54,7 +54,7 @@ void ThreadClient::interactWithClient() {
 void ThreadClient::processClientNumber(const int number) {
     std::string message;
     try {
-        std::map<std::string, int> answer = numberGuesser.countDigits(number);
+        std::map<std::string, int> answer = numberGuesser(number);
 
         if (answer[GOOD] > 0) {
             if (answer[GOOD] == NUM_DIGITS) {

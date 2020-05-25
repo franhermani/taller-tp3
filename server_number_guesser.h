@@ -32,7 +32,7 @@ public:
     // Cuenta la cantidad de digitos bien, regular y mal de 'number'
     // con respecto a 'secret_number'
     // Devuelve un map con la cantidad correspondiente a cada categoria
-    const std::map<std::string, int> countDigits(const int number) const;
+    const std::map<std::string, int> operator()(const int number) const;
 };
 
 #endif // NUMBER_GUESSER_H
