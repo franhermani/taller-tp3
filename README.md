@@ -61,7 +61,9 @@ Como etapa final, inicié un proceso de refactorización que incluyó los siguie
 
 ### Arquitectura multicliente
 
-DIAGRAMA
+El siguiente diagrama ilustra la arquitectura multicliente del lado del servidor:
+
+![img3](images/img3.png)
 
 ### RAII
 
