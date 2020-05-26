@@ -15,27 +15,30 @@ ByteMsg ServerProtocol::encodeMessage(const char *message) {
                          " comandos válidos\n\tRENDIRSE: pierde el juego"
                          " automáticamente\n\tXXX: Número de 3 cifras a ser"
                          " enviado al servidor para adivinar el número"
-                         " secreto"},
-             {SURRENDER_CHAR, LOSE_MSG}};
-
+                         " secreto"}, {SURRENDER_CHAR, LOSE_MSG}};
     const char *response;
     if (message[0] == HELP_CHAR || message[0] == SURRENDER_CHAR) {
         response = responses[message[0]];
     } else {
         response = message;
     }
-    uint32_t length_network = htonl(strlen(response));
+    writeMessageLength(response);
+    writeMessageValue(response);
+    return byteMsg;
+}
 
+void ServerProtocol::writeMessageLength(const char *message) {
+    uint32_t length_network = htonl(strlen(message));
     byteMsg.value[byteMsg.pos] = (length_network & 0x000000FF);
     byteMsg.value[++byteMsg.pos] = (length_network & 0x0000FF00) >> 8;
     byteMsg.value[++byteMsg.pos] = (length_network & 0x00FF0000) >> 16;
     byteMsg.value[++byteMsg.pos] = (length_network & 0xFF000000) >> 24;
+}
 
+void ServerProtocol::writeMessageValue(const char *message) {
     size_t i;
-    for (i = 0; i < strlen(response); i ++)
-        byteMsg.value[++byteMsg.pos] = response[i];
-
-    return byteMsg;
+    for (i = 0; i < strlen(message); i ++)
+        byteMsg.value[++byteMsg.pos] = message[i];
 }
 
 std::string ServerProtocol::decodeMessageValue(const char *message) {

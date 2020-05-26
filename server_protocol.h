@@ -6,6 +6,12 @@
 #include "common_protocol.h"
 
 class ServerProtocol : public Protocol {
+    // Escribe la longitud del mensaje en big endian en el struct ByteMsg
+    void writeMessageLength(const char *message);
+
+    // Escribe el mensaje propiamente dicho en el struct ByteMsg
+    void writeMessageValue(const char *message);
+
 public:
     // Constructor
     ServerProtocol();

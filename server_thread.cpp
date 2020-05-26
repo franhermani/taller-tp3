@@ -3,6 +3,8 @@
 
 Thread::Thread() {}
 
+Thread::~Thread() {}
+
 void Thread::start() {
     thread = std::thread(&Thread::run, this);
 }
@@ -10,8 +12,6 @@ void Thread::start() {
 void Thread::join() {
     thread.join();
 }
-
-Thread::~Thread() {}
 
 Thread::Thread(Thread &&other) {
     thread = std::move(other.thread);

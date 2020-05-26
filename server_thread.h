@@ -10,6 +10,17 @@ public:
     // Constructor
     Thread();
 
+    // Constructor y asignacion por copia deshabilitados
+    Thread(const Thread&) = delete;
+    Thread& operator=(const Thread&) = delete;
+
+    // Constructor y asignacion por movimiento
+    Thread(Thread&& other);
+    Thread& operator=(Thread&& other);
+
+    // Destructor
+    virtual ~Thread();
+
     // Inicializa el thread
     void start();
 
@@ -19,23 +30,12 @@ public:
     // Frena la ejecucion del thread (redefinido por sus clases derivadas)
     virtual void stop() = 0;
 
-    // Indica el el thread esta corriendo o no
+    // Indica si el thread esta corriendo o no
     // (redefinido por sus clases derivadas)
     virtual const bool isDead() = 0;
 
     // Espera a que finalice el thread
     void join();
-
-    // Destructor
-    virtual ~Thread();
-
-    // Constructor y asignacion por copia deshabilitados
-    Thread(const Thread&) = delete;
-    Thread& operator=(const Thread&) = delete;
-
-    // Constructor y asignacion por movimiento
-    Thread(Thread&& other);
-    Thread& operator=(Thread&& other);
 };
 
 #endif // THREAD_H
