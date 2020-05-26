@@ -14,7 +14,7 @@ void ThreadAcceptor::run() {
         try {
             socket.listenToClients();
             createThreadClient();
-            clients.back()->start();
+            startThreadClient();
             cleanDeadClients();
             updateNumberPos();
         } catch(SocketError) {
@@ -38,6 +38,10 @@ void ThreadAcceptor::createThreadClient() {
     Socket socket_client = socket.acceptClients();
     clients.push_back(new ThreadClient(std::move(socket_client),
             numbers[actual_number_pos], gameStats));
+}
+
+void ThreadAcceptor::startThreadClient() {
+    clients.back()->start();
 }
 
 void ThreadAcceptor::cleanDeadClients() {

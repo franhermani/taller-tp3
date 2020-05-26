@@ -5,15 +5,15 @@
 #include <atomic>
 #include "server_thread.h"
 #include "common_socket.h"
-#include "server_thread_client.h"
 #include "server_number_guesser.h"
+#include "server_thread_client.h"
 #include "server_game_stats.h"
 
 class ThreadAcceptor : public Thread {
     Socket socket;
     std::vector<NumberGuesser>& numbers;
-    GameStats& gameStats;
     std::vector<ThreadClient*> clients;
+    GameStats& gameStats;
     std::atomic<bool> keep_talking;
     std::atomic<bool> is_running;
     int actual_number_pos;
@@ -21,7 +21,11 @@ class ThreadAcceptor : public Thread {
     // Crea el thread del cliente
     void createThreadClient();
 
-    // Recorre el vector de clientes y limpia aquellos que ya finalizaron
+    // Inicializa el thread del cliente
+    void startThreadClient();
+
+    // Recorre el vector de clientes y elimina aquellos que ya finalizaron
+    // Libera la memoria reservada
     void cleanDeadClients();
 
     // Recorre el vector de clientes y espera a que finalicen
@@ -47,8 +51,7 @@ public:
     // Setea la variable booleana 'keep_talking' en false
     virtual void stop() override;
 
-    // Devuelve true si el thread no esta corriendo o
-    // false en caso contrario
+    // Devuelve true si el thread no esta corriendo o false en caso contrario
     virtual const bool isDead() override;
 };
 
