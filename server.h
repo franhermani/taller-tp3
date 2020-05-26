@@ -9,8 +9,8 @@
 
 class Server {
     File& numbers_file;
-    ThreadAcceptor *threadAcceptor;
     std::vector<NumberGuesser> numbers;
+    ThreadAcceptor *threadAcceptor;
     GameStats gameStats;
 
 public:

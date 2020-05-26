@@ -12,9 +12,7 @@
 
 NumberGuesser::NumberGuesser(int number) {
     if (isOutOfRange(number)) throw OutOfRangeError();
-
     secret_number = convertIntToVector(number);
-
     if (hasRepeatedDigits(secret_number)) throw RepeatedDigitsError();
 }
 
@@ -48,7 +46,6 @@ const std::vector<int> NumberGuesser::convertIntToVector(int number) const {
 const std::map<std::string, int> NumberGuesser::operator()(const int number)
 const {
     if (isOutOfRange(number)) throw InvalidNumberError();
-
     std::vector<int> digits = convertIntToVector(number);
     if (hasRepeatedDigits(digits)) throw InvalidNumberError();
 

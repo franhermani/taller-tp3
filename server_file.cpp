@@ -1,7 +1,5 @@
 #include <fstream>
-#include <string>
 #include <exception>
-#include <iostream>
 #include "server_file.h"
 
 File::File(const char *path) {
