@@ -46,6 +46,17 @@ Finalizado el funcionamiento del TP para un único cliente, comencé la implemen
 arquitectura multicliente. Para ello, creé dos clases derivadas de thread que serán explicadas
 en la próxima sección.
 
+# Refactorización
+
+Como etapa final, inicié un proceso de refactorización que incluyó los siguientes puntos:
+
+- Modularización de funciones
+- Mejor asignación de responsabilidades
+- Uso de *member initializer lists*
+- Uso de *const* en funciones que había pasado por alto
+- Liberación de recursos en destructores que había pasado por alto (RAII)
+- Corrección en la visibilidad de ciertos métodos
+
 # Puntos de interés
 
 ### Arquitectura multicliente
