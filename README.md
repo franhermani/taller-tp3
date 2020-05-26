@@ -74,13 +74,13 @@ Hice uso de la técnica de polimorfismo en las siguientes clases:
 - Clase base *Thread* y clases derivadas *ThreadAcceptor* y *ThreadClient*. Ambas clases derivadas
 overridean las funciones virtuales de su clase base: *run()*, *stop()* y *isDead()*.
 
-DIAGRAMA
+![img1](images/img1.png)
 
 - Clase base *Protocol* y clases derivadas *ServerProtocol* y *ClientProtocol*. Ambas clases derivadas
 overridean las funciones virtuales de su clase base: *encodeMessage()*, *decodeMessageValue()* y
 *decodeMessageLength()*.
 
-DIAGRAMA
+![img2](images/img2.png)
 
 ### Sobrecarga del operador ()
 
