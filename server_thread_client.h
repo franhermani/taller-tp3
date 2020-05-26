@@ -29,10 +29,15 @@ class ThreadClient : public Thread {
     // Envia un mensaje al cliente
     void sendMessage(const std::string& message);
 
+    // Recibe el numero enviado por el cliente
     const int receiveNumber(size_t length);
 
-    // Recibe el numero enviado por el cliente
-    std::string processClientNumber(const int number);
+    // Procesa el numero enviado por el cliente
+    // Devuelve el mensaje de respuesta
+    const std::string processNumber(const int number);
+
+    // Devuelve la respuesta al numero enviado por el cliente
+    const std::string writeNumberAnswer(const int number);
 
 public:
     // Constructor
