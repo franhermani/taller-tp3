@@ -39,6 +39,12 @@ class ThreadClient : public Thread {
     // Devuelve la respuesta al numero enviado por el cliente
     const std::string writeNumberAnswer(const int number);
 
+    // Gana la partida
+    void win();
+
+    // Pierde la partida
+    void lose();
+
 public:
     // Constructor
     ThreadClient(Socket socket, NumberGuesser& number_guesser,

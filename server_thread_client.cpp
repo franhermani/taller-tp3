@@ -39,6 +39,7 @@ const bool ThreadClient::isDead() {
 void ThreadClient::interactWithClient() {
     std::string response = receiveMessage();
     sendMessage(response);
+    if (is_finished) stop();
 }
 
 const std::string ThreadClient::receiveMessage() {
@@ -48,18 +49,14 @@ const std::string ThreadClient::receiveMessage() {
 
     uint32_t length = protocol.decodeMessageLength(buffer_byte);
     if (length > 0) {
+        num_tries += 1;
         int number = receiveNumber(length);
         response = processNumber(number);
     } else {
         std::string str(buffer_byte);
         response = str;
+        if (buffer_byte[0] == SURRENDER_CHAR) lose();
     }
-    if (buffer_byte[0] == SURRENDER_CHAR) {
-        gameStats.addLoser();
-        is_finished = true;
-    }
-    if (is_finished) stop();
-
     return response;
 }
 
@@ -82,15 +79,10 @@ const std::string ThreadClient::processNumber(const int number) {
     } catch(InvalidNumberError &e) {
         response = e.what();
     }
-    num_tries += 1;
-
     if (num_tries == ATTEMPTS && response != WIN_MSG) {
         response = LOSE_MSG;
-        gameStats.addLoser();
-        is_finished = true;
+        lose();
     }
-    if (is_finished) stop();
-
     return response;
 }
 
@@ -98,20 +90,28 @@ const std::string ThreadClient::writeNumberAnswer(const int number) {
     std::string response;
     std::map<std::string, int> answer = numberGuesser(number);
 
-    if (answer[GOOD] > 0) {
-        if (answer[GOOD] == NUM_DIGITS) {
-            response += WIN_MSG;
-            gameStats.addWinner();
-            is_finished = true;
-        } else {
+    if (answer[GOOD] == NUM_DIGITS) {
+        response = WIN_MSG;
+        win();
+    } else {
+        if (answer[GOOD] > 0)
             response += std::to_string(answer[GOOD]) + GOOD;
+        if (answer[REGULAR] > 0) {
+            if (response.size() > 0) response += ", ";
+            response += std::to_string(answer[REGULAR]) + REGULAR;
         }
+        if (answer[BAD] > 0)
+            response = std::to_string(answer[BAD]) + BAD;
     }
-    if (answer[REGULAR] > 0) {
-        if (response.size() > 0) response += ", ";
-        response += std::to_string(answer[REGULAR]) + REGULAR;
-    }
-    if (answer[BAD] > 0) response += std::to_string(answer[BAD]) + BAD;
-
     return response;
+}
+
+void ThreadClient::win() {
+    gameStats.addWinner();
+    is_finished = true;
+}
+
+void ThreadClient::lose() {
+    gameStats.addLoser();
+    is_finished = true;
 }
