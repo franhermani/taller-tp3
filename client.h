@@ -13,9 +13,10 @@ class Client {
     const bool isValidNumber(const std::string& command) const;
 
     // Envia un mensaje al servidor
-    void sendMessage(ByteMsg& byte_msg);
+    void sendMessage(const std::string& message);
 
     // Recibe un mensaje del servidor
+    // Devuelve la respuesta a enviarle
     const std::string receiveMessage();
 
 public:

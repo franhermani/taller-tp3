@@ -51,8 +51,7 @@ const bool Client::isValidNumber(const std::string& command) const {
 }
 
 const bool Client::interactWithServer(const std::string& command) {
-    ByteMsg byte_msg = protocol.encodeMessage(command.c_str());
-    sendMessage(byte_msg);
+    sendMessage(command);
     std::string response = receiveMessage();
 
     if (response == WIN_MSG || response == LOSE_MSG) return false;
@@ -60,7 +59,8 @@ const bool Client::interactWithServer(const std::string& command) {
     return true;
 }
 
-void Client::sendMessage(ByteMsg& byte_msg) {
+void Client::sendMessage(const std::string& message) {
+    ByteMsg byte_msg = protocol.encodeMessage(message.c_str());
     socket.sendBytes(byte_msg.value, byte_msg.pos + 1);
 }
 

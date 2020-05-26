@@ -37,28 +37,45 @@ const bool ThreadClient::isDead() {
 }
 
 void ThreadClient::interactWithClient() {
+    std::string response = receiveMessage();
+    sendMessage(response);
+}
+
+const std::string ThreadClient::receiveMessage() {
+    std::string response;
     char buffer_byte[BYTE_SIZE];
     socket.receiveBytes(buffer_byte, BYTE_SIZE);
 
     uint32_t length = protocol.decodeMessageLength(buffer_byte);
     if (length > 0) {
-        char buffer_number[NUMBER_SIZE];
-        socket.receiveBytes(buffer_number, length);
-        std::string number_str = protocol.decodeMessageValue(buffer_number);
-        processClientNumber(stoi(number_str));
+        int number = receiveNumber(length);
+        response = processClientNumber(number);
     } else {
-        ByteMsg byte_msg = protocol.encodeMessage(buffer_byte);
-        socket.sendBytes(byte_msg.value, byte_msg.pos + 1);
-
-        if (buffer_byte[0] == SURRENDER_CHAR) {
-            gameStats.addLoser();
-            is_finished = true;
-        }
+        std::string str(buffer_byte);
+        response = str;
+    }
+    if (buffer_byte[0] == SURRENDER_CHAR) {
+        gameStats.addLoser();
+        is_finished = true;
     }
     if (is_finished) stop();
+
+    return response;
 }
 
-void ThreadClient::processClientNumber(const int number) {
+void ThreadClient::sendMessage(const std::string& response) {
+    ByteMsg byte_msg = protocol.encodeMessage(response.c_str());
+    socket.sendBytes(byte_msg.value, byte_msg.pos + 1);
+}
+
+const int ThreadClient::receiveNumber(size_t length) {
+    char buffer_number[NUMBER_SIZE];
+    socket.receiveBytes(buffer_number, length);
+    std::string number_str = protocol.decodeMessageValue(buffer_number);
+    return stoi(number_str);
+}
+
+std::string ThreadClient::processClientNumber(const int number) {
     std::string message;
     try {
         std::map<std::string, int> answer = numberGuesser(number);
@@ -86,8 +103,7 @@ void ThreadClient::processClientNumber(const int number) {
         gameStats.addLoser();
         is_finished = true;
     }
-    ByteMsg byte_msg = protocol.encodeMessage(message.c_str());
-    socket.sendBytes(byte_msg.value, byte_msg.pos + 1);
-
     if (is_finished) stop();
+
+    return message;
 }
