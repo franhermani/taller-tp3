@@ -1,6 +1,6 @@
 #include <iostream>
 #include <string.h>
-#include <math.h>
+#include <climits>
 #include "client.h"
 #include "common_defines.h"
 #include "common_socket_error.h"
@@ -43,7 +43,7 @@ const bool Client::isValidCommand(const std::string& command) const {
 
 const bool Client::isValidNumber(const std::string& command) const {
     try {
-        if (std::stoi(command) >= pow(2, 16)) return false;
+        if (std::stoi(command) > USHRT_MAX) return false;
     } catch(...) {
         return false;
     }
