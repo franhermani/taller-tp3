@@ -8,6 +8,7 @@
 class Client {
     ClientProtocol protocol;
     Socket socket;
+    bool keepPlaying;
 
     // Determina si un numero recibido por stdin es valido o no
     const bool isValidNumber(const std::string& command) const;
@@ -32,9 +33,11 @@ public:
     const bool isValidCommand(const std::string& command) const;
 
     // Interactua con el servidor (envia y recibe mensajes)
-    // Devuelve false si termina el juego (esto es, el server envia
-    // 'Ganaste' o 'Perdiste') o true en cualquier otro caso
-    const bool interactWithServer(const std::string& command);
+    // Actualiza el valor de la variable booleana 'keepPlaying'
+    void interactWithServer(const std::string& command);
+
+    // Devuelve true si el juego finalizo, false en caso contrario
+    const bool isGameOver() const;
 };
 
 #endif // CLIENT_H

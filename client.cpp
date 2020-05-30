@@ -24,7 +24,8 @@ int main(int argc, char *argv[]) {
                 std::cout << "Error: comando inválido. Escriba AYUDA "
                              "para obtener ayuda\n";
             } else {
-                if (! client.interactWithServer(command)) break;
+                client.interactWithServer(command);
+                if (client.isGameOver()) break;
             }
         }
     } catch(SocketError& e) {
@@ -35,7 +36,8 @@ int main(int argc, char *argv[]) {
     return RET;
 }
 
-Client::Client(const char *host, const char *port) : socket(host, port) {}
+Client::Client(const char *host, const char *port) :
+socket(host, port), keepPlaying(true) {}
 
 const bool Client::isValidCommand(const std::string& command) const {
     return (command == HELP || command == SURRENDER || isValidNumber(command));
@@ -50,13 +52,10 @@ const bool Client::isValidNumber(const std::string& command) const {
     return true;
 }
 
-const bool Client::interactWithServer(const std::string& command) {
+void Client::interactWithServer(const std::string& command) {
     sendMessage(command);
     std::string response = receiveMessage();
-
-    if (response == WIN_MSG || response == LOSE_MSG) return false;
-
-    return true;
+    if (response == WIN_MSG || response == LOSE_MSG) keepPlaying = false;
 }
 
 void Client::sendMessage(const std::string& message) {
@@ -78,4 +77,8 @@ const std::string Client::receiveMessage() {
     std::cout << response << "\n";
 
     return response;
+}
+
+const bool Client::isGameOver() const {
+    return (! keepPlaying);
 }
