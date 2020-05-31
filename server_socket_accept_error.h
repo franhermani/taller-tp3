@@ -5,7 +5,7 @@
 
 struct SocketAcceptError : public std::exception {
     const char * what() const throw() {
-        return "Error al aceptar el cliente\n";
+        return "Error al aceptar al cliente\n";
     }
 };
 
