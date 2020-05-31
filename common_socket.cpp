@@ -45,6 +45,7 @@ void Socket::shutdownChannel(const int channel) {
 }
 
 void Socket::closeSocketDescriptor() {
+    if (sd == -1) return;
     close(sd);
     sd = -1;
 }
