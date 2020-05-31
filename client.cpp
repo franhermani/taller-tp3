@@ -60,7 +60,7 @@ void Client::interactWithServer(const std::string& command) {
 
 void Client::sendMessage(const std::string& message) {
     ByteMsg byte_msg = protocol.encodeMessage(message.c_str());
-    socket.sendBytes(byte_msg.value, byte_msg.pos + 1);
+    socket.sendBytes(byte_msg.value, byte_msg.pos);
 }
 
 const std::string Client::receiveMessage() {
