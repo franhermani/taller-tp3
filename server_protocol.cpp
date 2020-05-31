@@ -39,7 +39,8 @@ void ServerProtocol::writeMessageValue(const char *message) {
 }
 
 std::string ServerProtocol::decodeMessageValue(const char *message) {
-    uint16_t number = message[0] | (message[1] << 8);
+    uint16_t number;
+    memcpy(&number, message, sizeof(uint16_t));
     return std::to_string(ntohs(number));
 }
 
