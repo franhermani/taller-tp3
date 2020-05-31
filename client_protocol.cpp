@@ -1,7 +1,6 @@
 #include <string.h>
 #include <map>
 #include <stdint.h>
-#include <cstring>
 #include <arpa/inet.h>
 #include "client_protocol.h"
 #include "common_defines.h"
