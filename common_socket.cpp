@@ -25,6 +25,7 @@ Socket::Socket(Socket &&other) : sd(other.sd) {
 }
 
 Socket& Socket::operator=(Socket &&other) {
+    finish();
     sd = std::move(other.sd);
     return *this;
 }
