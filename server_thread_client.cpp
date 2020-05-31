@@ -44,31 +44,31 @@ void ThreadClient::interactWithClient() {
 
 const std::string ThreadClient::receiveMessage() {
     std::string response;
-    char buffer_byte[BYTE_SIZE];
-    socket.receiveBytes(buffer_byte, BYTE_SIZE);
+    char buffer[BYTE_SIZE];
+    socket.receiveBytes(buffer, BYTE_SIZE);
 
-    uint32_t length = protocol.decodeMessageLength(buffer_byte);
+    uint32_t length = protocol.decodeMessageLength(buffer);
     if (length > 0) {
         numTries += 1;
         int number = receiveNumber(length);
         response = processNumber(number);
     } else {
-        std::string str(buffer_byte);
+        std::string str(buffer);
         response = str;
-        if (buffer_byte[0] == SURRENDER_CHAR) lose();
+        if (buffer[0] == SURRENDER_CHAR) lose();
     }
     return response;
 }
 
 void ThreadClient::sendMessage(const std::string& response) {
     ByteMsg byte_msg = protocol.encodeMessage(response.c_str());
-    socket.sendBytes(byte_msg.value, byte_msg.pos + 1);
+    socket.sendBytes(byte_msg.value, byte_msg.pos);
 }
 
 const int ThreadClient::receiveNumber(size_t length) {
-    char buffer_number[NUMBER_SIZE];
-    socket.receiveBytes(buffer_number, length);
-    std::string number_str = protocol.decodeMessageValue(buffer_number);
+    char buffer[NUMBER_SIZE];
+    socket.receiveBytes(buffer, length);
+    std::string number_str = protocol.decodeMessageValue(buffer);
     return stoi(number_str);
 }
 

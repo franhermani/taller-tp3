@@ -29,16 +29,13 @@ ByteMsg ServerProtocol::encodeMessage(const char *message) {
 
 void ServerProtocol::writeMessageLength(const char *message) {
     uint32_t length_network = htonl(strlen(message));
-    byteMsg.value[byteMsg.pos] = (length_network & 0x000000FF);
-    byteMsg.value[++byteMsg.pos] = (length_network & 0x0000FF00) >> 8;
-    byteMsg.value[++byteMsg.pos] = (length_network & 0x00FF0000) >> 16;
-    byteMsg.value[++byteMsg.pos] = (length_network & 0xFF000000) >> 24;
+    memcpy(&byteMsg.value[byteMsg.pos], &length_network, sizeof(uint32_t));
+    byteMsg.pos += sizeof(uint32_t);
 }
 
 void ServerProtocol::writeMessageValue(const char *message) {
-    size_t i;
-    for (i = 0; i < strlen(message); i ++)
-        byteMsg.value[++byteMsg.pos] = message[i];
+    memcpy(&byteMsg.value[byteMsg.pos], message, strlen(message));
+    byteMsg.pos += strlen(message);
 }
 
 std::string ServerProtocol::decodeMessageValue(const char *message) {
