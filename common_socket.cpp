@@ -8,8 +8,8 @@
 #define ERROR 1
 #define MAX_LISTEN_QUEUE_LEN 15
 
-Socket::Socket(const char* host, const char* port) :
-sd(-1), isServer(host == 0) {
+Socket::Socket(const char* host, const char* port, const bool is_server) :
+sd(-1), isServer(is_server) {
     memset(&hints, 0, sizeof(struct addrinfo));
     hints.ai_family = AF_INET;
     hints.ai_socktype = SOCK_STREAM;

@@ -6,7 +6,7 @@
 
 ThreadAcceptor::ThreadAcceptor(const char *host, const char *port,
         std::vector<NumberGuesser>& numbers, GameStats& game_stats) :
-        socket(host, port), numbers(numbers), gameStats(game_stats),
+        socket(host, port, true), numbers(numbers), gameStats(game_stats),
         keepTalking(true), isRunning(true), actualNumberPos(0) {}
 
 void ThreadAcceptor::run() {

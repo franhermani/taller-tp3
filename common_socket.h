@@ -39,7 +39,7 @@ public:
     // Constructor
     // Crea un socket asociado al 'host' y 'port' y bindea (si es server)
     // o conecta (si es cliente) a la primera address disponible
-    Socket(const char *host, const char *port);
+    Socket(const char *host, const char *port, const bool is_server);
 
     // [Solo servidor]
     // Constructor para sockets devueltos por accept

@@ -37,7 +37,7 @@ int main(int argc, char *argv[]) {
 }
 
 Client::Client(const char *host, const char *port) :
-socket(host, port), keepPlaying(true) {}
+socket(host, port, false), keepPlaying(true) {}
 
 const bool Client::isValidCommand(const std::string& command) const {
     return (command == HELP || command == SURRENDER || isValidNumber(command));
