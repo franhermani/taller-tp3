@@ -29,8 +29,7 @@ std::string ClientProtocol::decodeMessageValue(const char *message) {
 }
 
 uint32_t ClientProtocol::decodeMessageLength(const char *message) {
-    uint32_t length = message[0] | (message[1] << 8) |
-            (message[2] << 16) | (message[3] << 24);
-
+    uint32_t length;
+    memcpy(&length, message, sizeof(uint32_t));
     return ntohl(length);
 }
