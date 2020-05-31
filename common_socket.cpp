@@ -10,11 +10,12 @@
 
 Socket::Socket(const char* host, const char* port, const bool is_server) :
 sd(-1), isServer(is_server) {
+    struct addrinfo hints;
     memset(&hints, 0, sizeof(struct addrinfo));
     hints.ai_family = AF_INET;
     hints.ai_socktype = SOCK_STREAM;
     hints.ai_flags = isServer ? AI_PASSIVE : 0;
-    _resolve_addr(host, port);
+    _resolve_addr(host, port, hints);
 }
 
 Socket::Socket(const int sd) : sd(sd) {}
@@ -47,7 +48,8 @@ void Socket::closeSocketDescriptor() {
     sd = -1;
 }
 
-void Socket::_resolve_addr(const char *host, const char *port) {
+void Socket::_resolve_addr(const char *host, const char *port,
+        struct addrinfo& hints) {
     struct addrinfo *ai_list, *ptr;
     int sd_tmp, status;
 

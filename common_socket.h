@@ -7,13 +7,13 @@
 
 class Socket {
     int sd;
-    struct addrinfo hints;
     bool isServer;
 
-    // Obtiene addresses segun el 'host' y 'port' y selecciona
-    // la primera disponible
+    // Obtiene addresses segun el 'host', 'port' y 'hints'
+    // y selecciona la primera disponible
     // Lanza SocketError en caso de error
-    void _resolve_addr(const char *host, const char *port);
+    void _resolve_addr(const char *host, const char *port,
+            struct addrinfo& hints);
 
     // [Solo servidor]
     // Asocia un socket a un proceso dado
