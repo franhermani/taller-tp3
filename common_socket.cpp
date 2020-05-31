@@ -9,11 +9,11 @@
 #define MAX_LISTEN_QUEUE_LEN 15
 
 Socket::Socket(const char* host, const char* port) :
-sd(-1), is_server(host == 0) {
+sd(-1), isServer(host == 0) {
     memset(&hints, 0, sizeof(struct addrinfo));
     hints.ai_family = AF_INET;
     hints.ai_socktype = SOCK_STREAM;
-    hints.ai_flags = is_server ? AI_PASSIVE : 0;
+    hints.ai_flags = isServer ? AI_PASSIVE : 0;
     _resolve_addr(host, port);
 }
 
@@ -59,7 +59,7 @@ void Socket::_resolve_addr(const char *host, const char *port) {
         if (sd_tmp == -1) continue;
         sd = sd_tmp;
 
-        if (is_server) {
+        if (isServer) {
             if (_bind(ptr->ai_addr, ptr->ai_addrlen) == OK) break;
         } else {
             if (_connect(ptr->ai_addr, ptr->ai_addrlen) == OK) break;

@@ -14,9 +14,9 @@ class ThreadAcceptor : public Thread {
     std::vector<NumberGuesser>& numbers;
     std::vector<ThreadClient*> clients;
     GameStats& gameStats;
-    std::atomic<bool> keep_talking;
-    std::atomic<bool> is_running;
-    int actual_number_pos;
+    std::atomic<bool> keepTalking;
+    std::atomic<bool> isRunning;
+    int actualNumberPos;
 
     // Crea el thread del cliente
     void createThreadClient();

@@ -5,7 +5,7 @@
 
 class File {
     std::ifstream ifs;
-    bool is_open;
+    bool isOpen;
 
 public:
     // Constructor

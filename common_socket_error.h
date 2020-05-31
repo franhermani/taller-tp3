@@ -7,7 +7,7 @@
 #define BUF_LEN 256
 
 class SocketError : public std::exception {
-    char msg_error[BUF_LEN];
+    char msgError[BUF_LEN];
 
 public:
     explicit SocketError(const char *fmt, ...) noexcept;

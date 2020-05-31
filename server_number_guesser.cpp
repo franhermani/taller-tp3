@@ -12,12 +12,12 @@
 
 NumberGuesser::NumberGuesser(int number) {
     if (isOutOfRange(number)) throw OutOfRangeError();
-    secret_number = convertIntToVector(number);
-    if (hasRepeatedDigits(secret_number)) throw RepeatedDigitsError();
+    secretNumber = convertIntToVector(number);
+    if (hasRepeatedDigits(secretNumber)) throw RepeatedDigitsError();
 }
 
 NumberGuesser::NumberGuesser(NumberGuesser &&other) {
-    secret_number = std::move(other.secret_number);
+    secretNumber = std::move(other.secretNumber);
 }
 
 const bool NumberGuesser::isOutOfRange(const int& number) const {
@@ -51,12 +51,12 @@ const {
 
     std::map<std::string, int> answer = {{GOOD, 0}, {REGULAR, 0}, {BAD, 0}};
     size_t i;
-    for (i = 0; i < secret_number.size(); i ++) {
-        if (digits[i] == secret_number[i]) {
+    for (i = 0; i < secretNumber.size(); i ++) {
+        if (digits[i] == secretNumber[i]) {
             answer[GOOD] += 1;
         } else {
-            answer[REGULAR] += std::count(secret_number.begin(),
-                                          secret_number.end(), digits[i]);
+            answer[REGULAR] += std::count(secretNumber.begin(),
+                                          secretNumber.end(), digits[i]);
         }
     }
     if (answer[GOOD] == 0 && answer[REGULAR] == 0) answer[BAD] = NUM_DIGITS;

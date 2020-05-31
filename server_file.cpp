@@ -5,16 +5,16 @@
 File::File(const char *path) {
     ifs.open(path, std::ifstream::in);
     if (! ifs.good()) throw std::runtime_error("Error al abrir el archivo\n");
-    is_open = true;
+    isOpen = true;
 }
 
 File::~File() {
-    if (is_open) closeFD();
+    if (isOpen) closeFD();
 }
 
 void File::closeFD() {
     ifs.close();
-    is_open = false;
+    isOpen = false;
 }
 
 std::ifstream& File::getFile() {

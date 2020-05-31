@@ -14,32 +14,32 @@
 ThreadClient::ThreadClient(Socket socket, NumberGuesser& number_guesser,
         GameStats& game_stats) : socket(std::move(socket)),
         numberGuesser(number_guesser), gameStats(game_stats),
-        keep_talking(true), is_running(true), is_finished(false),
-        num_tries(0) {}
+        keepTalking(true), isRunning(true), isFinished(false),
+        numTries(0) {}
 
 void ThreadClient::run() {
-    while (keep_talking) {
+    while (keepTalking) {
         try {
             interactWithClient();
         } catch(SocketError) {
             break;
         }
     }
-    is_running = false;
+    isRunning = false;
 }
 
 void ThreadClient::stop() {
-    keep_talking = false;
+    keepTalking = false;
 }
 
 const bool ThreadClient::isDead() {
-    return (! is_running);
+    return (! isRunning);
 }
 
 void ThreadClient::interactWithClient() {
     std::string response = receiveMessage();
     sendMessage(response);
-    if (is_finished) stop();
+    if (isFinished) stop();
 }
 
 const std::string ThreadClient::receiveMessage() {
@@ -49,7 +49,7 @@ const std::string ThreadClient::receiveMessage() {
 
     uint32_t length = protocol.decodeMessageLength(buffer_byte);
     if (length > 0) {
-        num_tries += 1;
+        numTries += 1;
         int number = receiveNumber(length);
         response = processNumber(number);
     } else {
@@ -79,7 +79,7 @@ const std::string ThreadClient::processNumber(const int number) {
     } catch(InvalidNumberError &e) {
         response = e.what();
     }
-    if (num_tries == ATTEMPTS && response != WIN_MSG) {
+    if (numTries == ATTEMPTS && response != WIN_MSG) {
         response = LOSE_MSG;
         lose();
     }
@@ -108,10 +108,10 @@ const std::string ThreadClient::writeNumberAnswer(const int number) {
 
 void ThreadClient::win() {
     gameStats.addWinner();
-    is_finished = true;
+    isFinished = true;
 }
 
 void ThreadClient::lose() {
     gameStats.addLoser();
-    is_finished = true;
+    isFinished = true;
 }

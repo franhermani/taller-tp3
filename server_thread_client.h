@@ -14,10 +14,10 @@ class ThreadClient : public Thread {
     ServerProtocol protocol;
     NumberGuesser& numberGuesser;
     GameStats& gameStats;
-    std::atomic<bool> keep_talking;
-    std::atomic<bool> is_running;
-    std::atomic<bool> is_finished;
-    int num_tries;
+    std::atomic<bool> keepTalking;
+    std::atomic<bool> isRunning;
+    std::atomic<bool> isFinished;
+    int numTries;
 
     // Interactua con los clientes (envia y recibe mensajes)
     void interactWithClient();
@@ -57,7 +57,7 @@ public:
     // Llama a interactWithClient hasta que finalice la partida
     virtual void run() override;
 
-    // Setea la variable booleana 'keep_talking' en false
+    // Setea la variable booleana 'keepTalking' en false
     virtual void stop() override;
 
     // Devuelve true si el thread no esta corriendo o

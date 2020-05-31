@@ -6,7 +6,7 @@
 #include <map>
 
 class NumberGuesser {
-    std::vector<int> secret_number;
+    std::vector<int> secretNumber;
 
     // Determina si 'number' se encuentra fuera del rango valido
     const bool isOutOfRange(const int& number) const;
@@ -30,7 +30,7 @@ public:
     NumberGuesser(NumberGuesser&& other);
 
     // Cuenta la cantidad de digitos bien, regular y mal de 'number'
-    // con respecto a 'secret_number'
+    // con respecto a 'secretNumber'
     // Devuelve un map con la cantidad correspondiente a cada categoria
     const std::map<std::string, int> operator()(const int number) const;
 };

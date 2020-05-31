@@ -8,7 +8,7 @@
 class Socket {
     int sd;
     struct addrinfo hints;
-    bool is_server;
+    bool isServer;
 
     // Obtiene addresses segun el 'host' y 'port' y selecciona
     // la primera disponible
