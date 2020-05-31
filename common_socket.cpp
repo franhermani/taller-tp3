@@ -3,6 +3,7 @@
 #include <utility>
 #include "common_socket.h"
 #include "common_socket_error.h"
+#include "server_socket_accept_error.h"
 
 #define OK 0
 #define ERROR 1
@@ -104,9 +105,7 @@ void Socket::listenToClients() {
 
 Socket Socket::acceptClients() {
     int new_sd = accept(sd, NULL, NULL);
-    if (new_sd == -1)
-        throw SocketError("Error al aceptar el cliente\n");
-
+    if (new_sd == -1) throw SocketAcceptError();
     Socket accepted_socket(new_sd);
     return std::move(accepted_socket);
 }

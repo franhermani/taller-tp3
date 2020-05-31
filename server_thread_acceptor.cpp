@@ -2,7 +2,7 @@
 #include <utility>
 #include "server_thread_acceptor.h"
 #include "server_thread_client.h"
-#include "common_socket_error.h"
+#include "server_socket_accept_error.h"
 
 ThreadAcceptor::ThreadAcceptor(const char *host, const char *port,
         std::vector<NumberGuesser>& numbers, GameStats& game_stats) :
@@ -17,7 +17,7 @@ void ThreadAcceptor::run() {
             startThreadClient();
             cleanDeadClients();
             updateNumberPos();
-        } catch(SocketError) {
+        } catch(SocketAcceptError) {
             break;
         }
     }
