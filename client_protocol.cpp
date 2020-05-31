@@ -10,9 +10,10 @@ ClientProtocol::ClientProtocol() {}
 
 ByteMsg ClientProtocol::encodeMessage(const char *message) {
     cleanByteMsg();
-    if (strcmp(message, HELP) == 0) {
+    std::string str(message);
+    if (str == HELP) {
         byteMsg.value[byteMsg.pos++] = HELP_CHAR;
-    } else if (strcmp(message, SURRENDER) == 0) {
+    } else if (str == SURRENDER) {
         byteMsg.value[byteMsg.pos++] = SURRENDER_CHAR;
     } else {
         byteMsg.value[byteMsg.pos++] = NUMBER_CHAR;
