@@ -43,7 +43,8 @@ const bool Client::isValidCommand(const std::string& command) const {
 
 const bool Client::isValidNumber(const std::string& command) const {
     try {
-        if (std::stoi(command) > USHRT_MAX) return false;
+        int number = std::stoi(command);
+        if (number < 0 || number > USHRT_MAX) return false;
     } catch(...) {
         return false;
     }
